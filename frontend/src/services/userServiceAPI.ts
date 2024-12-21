@@ -23,6 +23,8 @@ class UserServiceAPI {
             .catch((err) => {
                 console.log(`An error has occured while registering the user, ${err}`)
             })
+
+            // Handle JWT and Store in Cookie.
     }
 }
 

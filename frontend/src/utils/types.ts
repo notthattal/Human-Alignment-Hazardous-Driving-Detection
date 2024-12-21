@@ -8,10 +8,7 @@ export type RegistrationFormData = {
     ethnicity: string,
     carMakeModel: string,
     gender: string,
-    badDrivingRecord: string,
-    speedingTickets: boolean,
-    atFault: boolean,
-    notAtFault: boolean,
+    speedingTicket: boolean,
     dui: boolean,
     visuallyImpaired: boolean
 }
