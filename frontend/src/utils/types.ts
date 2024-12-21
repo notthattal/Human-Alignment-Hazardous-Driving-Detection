@@ -12,3 +12,8 @@ export type RegistrationFormData = {
     dui: boolean,
     visuallyImpaired: boolean
 }
+
+export type SignInFormData = {
+    email: string,
+    password: string
+}
