@@ -16,29 +16,28 @@ const SignInPage: React.FC = () => {
         password: '',
     });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(formData);
+
+        try {
+            await UserServiceAPI.getInstance().signIn(formData);
+            navigate('/survey')
+        } catch (err: unknown) {
+            console.log('An error has occured during registration', err)
+        }
     };
 
     const handleNavigate = () => {
         navigate('/registration')
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value, type } = e.target;
-
-        let updatedValue: any;
-
-        if (type === 'checkbox') {
-            updatedValue = (e.target as HTMLInputElement).checked;
-        } else {
-            updatedValue = value;
-        }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
 
         setFormData((prevState) => ({
             ...prevState,
-            [name]: updatedValue,
+            [name]: value,
         }));
     };
 

@@ -6,8 +6,10 @@ import Row from 'react-bootstrap/Row';
 import UserServiceAPI from "../../services/userServiceAPI";
 import { RegistrationFormData } from '../../utils/types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationPage: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<RegistrationFormData>({
         email: '',
         password: '',
@@ -91,9 +93,14 @@ const RegistrationPage: React.FC = () => {
         "Prefer not to say",
     ];
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
+        try {
+            await UserServiceAPI.getInstance().registerUser(formData);
+            navigate('/signin')
+        } catch (err: unknown) {
+            console.log('An error has occured during registration', err)
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
