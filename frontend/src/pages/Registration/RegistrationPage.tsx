@@ -3,13 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
-import UserServiceAPI from "../../services/userServiceAPI";
 import { RegistrationFormData } from '../../utils/types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useRegister from '../../hooks/useRegister';
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
+    const { registerUser } = useRegister();
+
     const [formData, setFormData] = useState<RegistrationFormData>({
         email: '',
         password: '',
@@ -93,10 +95,14 @@ const RegistrationPage: React.FC = () => {
         "Prefer not to say",
     ];
 
+    const handleNavigate = () => {
+        navigate('/signin')
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await UserServiceAPI.getInstance().registerUser(formData);
+            await registerUser(formData);
             navigate('/signin')
         } catch (err: unknown) {
             console.log('An error has occured during registration', err)
@@ -122,7 +128,6 @@ const RegistrationPage: React.FC = () => {
 
     const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const password = e.target.value;
-
         setConfirmedPassword(password)
     }
 
@@ -387,9 +392,14 @@ const RegistrationPage: React.FC = () => {
                             </div>
                         </Form.Group>
 
-                        <Button variant="dark" type="submit" style={{ padding: '8px 45px 8px 45px', marginTop: '25px' }}>
-                            Submit
-                        </Button>
+                        <div className={styles.buttonGroup}>
+                            <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
+                                Submit
+                            </Button>
+                            <Button variant="danger" onClick={handleNavigate} style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
+                                Cancel
+                            </Button>
+                        </div>
                     </Form>
                 </div>
             </div>

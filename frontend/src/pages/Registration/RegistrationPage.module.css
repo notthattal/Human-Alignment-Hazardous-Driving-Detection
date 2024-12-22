@@ -35,3 +35,9 @@
     flex-direction: column;
     gap: 50px;
 }
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

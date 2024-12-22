@@ -3,13 +3,16 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
-import UserServiceAPI from "../../services/userServiceAPI";
 import { SignInFormData } from '../../utils/types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSignIn from '../../hooks/useSignIn';
+import { useAuth } from '../../hooks/useAuth';
 
 const SignInPage: React.FC = () => {
     const navigate = useNavigate();
+    const { signIn } = useSignIn();
+    const { user } = useAuth();
 
     const [formData, setFormData] = useState<SignInFormData>({
         email: '',
@@ -21,8 +24,7 @@ const SignInPage: React.FC = () => {
         console.log(formData);
 
         try {
-            await UserServiceAPI.getInstance().signIn(formData);
-            navigate('/survey')
+            await signIn(formData)
         } catch (err: unknown) {
             console.log('An error has occured during registration', err)
         }
