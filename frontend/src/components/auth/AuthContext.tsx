@@ -1,5 +1,6 @@
 import { createContext, useReducer, ReactNode, useEffect } from 'react';
-import { AuthState, AuthAction, AuthContextType } from '../../utils/interfaces';
+import { AuthState, AuthContextType } from '../../utils/interfaces';
+import { AuthAction } from '../../utils/types';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
