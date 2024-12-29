@@ -10,7 +10,7 @@ const Calibration: React.FC = () => {
     const [currentClicks, setCurrentClicks] = useState(0);
 
     const setNextCoordinate = () => {
-        if (currentCoordinate == coordinates.length) {
+        if (currentCoordinate == coordinates.length + 1) {
             setIsCalibrated(true);
         };
 

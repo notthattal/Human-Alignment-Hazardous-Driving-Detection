@@ -10,7 +10,11 @@ const LandingPage: React.FC = () => {
     const navigate = useNavigate();
 
     const handleBeginCalibration = () => {
-        navigate('/calibration');
+        const permissions = window.confirm('The Human-Alignment Hazard Detection Survey would like to access your camera.')
+
+        if (permissions) {
+            navigate('/calibration');
+        }
     }
 
     return (
