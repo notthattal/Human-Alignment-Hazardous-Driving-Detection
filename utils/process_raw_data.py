@@ -46,5 +46,4 @@ def combine_videos(camera_type):
 
 # Process each camera type
 for camera in camera_types:
-    combine_videos(camera)
 
