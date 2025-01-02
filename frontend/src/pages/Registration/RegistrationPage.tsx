@@ -96,14 +96,14 @@ const RegistrationPage: React.FC = () => {
     ];
 
     const handleNavigate = () => {
-        navigate('/signin')
+        navigate('/')
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             await registerUser(formData);
-            navigate('/signin')
+            navigate('/')
         } catch (err: unknown) {
             console.log('An error has occured during registration', err)
         }
