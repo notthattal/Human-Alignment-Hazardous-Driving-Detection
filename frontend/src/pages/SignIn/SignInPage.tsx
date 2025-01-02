@@ -7,11 +7,11 @@ import { SignInFormData } from '../../utils/types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSignIn from '../../hooks/useSignIn';
+import VideoPlayer from '../../components/video/VideoPlayer';
 
 const SignInPage: React.FC = () => {
     const navigate = useNavigate();
     const { signIn } = useSignIn();
-
     const [formData, setFormData] = useState<SignInFormData>({
         email: '',
         password: '',
@@ -20,7 +20,6 @@ const SignInPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(formData);
-
         try {
             await signIn(formData)
         } catch (err: unknown) {
@@ -34,7 +33,6 @@ const SignInPage: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-
         setFormData((prevState) => ({
             ...prevState,
             [name]: value,
@@ -50,6 +48,17 @@ const SignInPage: React.FC = () => {
                 <div className={styles.content}>
                     Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
                 </div>
+
+                {/* Video Player */}
+                <div style={{ 
+                    maxWidth: '800px', 
+                    margin: '20px auto', 
+                    padding: '10px',
+                    width: '100%'
+                }}>
+                    <VideoPlayer />
+                </div>
+
                 <div>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className='mb-4' controlId="formGridEmail" >
@@ -81,12 +90,12 @@ const SignInPage: React.FC = () => {
                         <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%' }}>
                             Sign In
                         </Button>
-                        <Button 
-                            variant="primary" 
-                            type="submit" 
-                            style={{ width: '100%' }} 
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ width: '100%' }}
                             onClick={handleNavigate}
-                            >
+                        >
                             Register
                         </Button>
                     </Form>
