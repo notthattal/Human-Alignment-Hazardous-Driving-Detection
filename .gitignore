@@ -39,4 +39,6 @@ coverage.xml
 node_modules/
 **/node_modules/
 .env
-.DS_Store
+.DS_Storenode_modules/
+**/node_modules/
+.env
