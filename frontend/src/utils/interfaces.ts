@@ -24,3 +24,20 @@ export interface WebGazerContextType {
     setIsCalibrated: (value: boolean) => void;
 }
 
+export interface VideoData {
+    url: string;
+    videoId: string;
+}
+
+export interface VideoPlayerProps {
+    onVideoComplete?: () => void;
+}
+
+export interface QuestionsProps {
+    onFormSumbitted?: () => void;
+}
+
+export interface QuestionsFormData {
+    dangerLevel: number;
+}
+
