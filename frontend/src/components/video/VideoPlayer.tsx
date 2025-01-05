@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { VideoData, VideoPlayerProps } from '../../utils/interfaces';
+import { useWebGazer } from '../../hooks/useWebGazer';
 
-interface VideoData {
-    url: string;
-    videoId: string;
-}
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete }) => {
+    const { startWebGazer, stopWebGazer } = useWebGazer();
 
-const VideoPlayer: React.FC = () => {
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+
+    const handleVideoFinished = () => {
+        stopWebGazer();
+        if (onVideoComplete) {
+            onVideoComplete();
+        }
+    }
 
     const fetchRandomVideo = async (): Promise<void> => {
         try {
@@ -20,9 +25,7 @@ const VideoPlayer: React.FC = () => {
             const data: VideoData = await response.json();
             console.log('Received video data:', data);
             setVideoUrl(data.url);
-            setError(null);
         } catch (err) {
-            setError('Failed to load video');
             console.error('Error fetching video:', err);
         } finally {
             setLoading(false);
@@ -30,11 +33,13 @@ const VideoPlayer: React.FC = () => {
     };
 
     useEffect(() => {
+        startWebGazer();
         fetchRandomVideo();
     }, []);
 
-    if (loading) return <div>Loading video...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) {
+        return <div>Loading video...</div>;
+    }
 
     return (
         <div className="video-container">
@@ -42,20 +47,16 @@ const VideoPlayer: React.FC = () => {
                 <video 
                     controls 
                     width="100%" 
-                    style={{ maxWidth: '800px' }}
+                    muted
+                    autoPlay
+                    onEnded={handleVideoFinished}
+                    style={{ maxWidth: '100vw', maxHeight: '100vh' }}
                     key={videoUrl}
                 >
                     <source src={videoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             )}
-            <button 
-                onClick={fetchRandomVideo}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                style={{ marginTop: '10px' }}
-            >
-                Load Another Video
-            </button>
         </div>
     );
 };

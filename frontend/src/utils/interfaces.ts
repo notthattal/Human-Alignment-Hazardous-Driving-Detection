@@ -38,6 +38,10 @@ export interface QuestionsProps {
 }
 
 export interface QuestionsFormData {
-    dangerLevel: number;
+    hazardDetected: string;         
+    noDetectionReason: string;      // Categorical: 'noHazards', 'uncertain', 'subtleHazards'
+    detectionConfidence: number;    // Scale 1-5 confidence rating
+    hazardSeverity: number;         // Scale 1-5 severity rating
+    hazardDescription: string;      // Text feature for NLP analysis
+    attentionFactors: string[];     // Multi-label categorical: ['motion', 'velocity', 'proximity', 'environment', 'anomaly', 'other']
 }
-

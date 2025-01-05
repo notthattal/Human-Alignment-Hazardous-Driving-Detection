@@ -40,7 +40,6 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
       if (webgazerInstance.current) {
         window.webgazer.end();
         setIsInitialized(false);
-        setIsCalibrated(false);
       }
     };
     
