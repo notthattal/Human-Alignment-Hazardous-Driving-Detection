@@ -45,7 +45,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete }) => {
         <div className="video-container">
             {videoUrl && (
                 <video 
-                    controls 
                     width="100%" 
                     muted
                     autoPlay
