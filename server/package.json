@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "Server for the Human-Aligned Hazard Detection Survey",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.717.0",
+    "@aws-sdk/s3-request-presigner": "^3.717.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
