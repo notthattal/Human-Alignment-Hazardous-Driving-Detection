@@ -27,6 +27,7 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
           }
         })
           .showVideoPreview(false)
+          .showPredictionPoints(false)
           .begin();
       
           setIsInitialized(true);
@@ -40,7 +41,6 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
       if (webgazerInstance.current) {
         window.webgazer.end();
         setIsInitialized(false);
-        setIsCalibrated(false);
       }
     };
     
