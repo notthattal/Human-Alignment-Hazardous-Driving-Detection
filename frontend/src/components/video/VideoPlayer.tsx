@@ -50,7 +50,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete }) => {
                     autoPlay
                     onEnded={handleVideoFinished}
                     style={{ maxWidth: '100vw', maxHeight: '100vh' }}
-                    key={videoUrl}
                 >
                     <source src={videoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
