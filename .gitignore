@@ -35,3 +35,10 @@ htmlcov/
 .coverage.*
 coverage.xml
 *.cover
+
+node_modules/
+**/node_modules/
+.env
+.DS_Storenode_modules/
+**/node_modules/
+.env
