@@ -55,7 +55,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted }) => {
                     Post-Simulation Survey
                 </div>
                 <div className={styles.content}>
-                    Please answer the following questions 
+                    <p className="mb-2 fst-italic">Please complete the following assessment regarding the driving scenario you just observed. Upon submission, you will be presented with a new driving scenario to evaluate.</p>
                 </div>
                 <div>
                     <Form onSubmit={handleSubmit}>

@@ -27,6 +27,7 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
           }
         })
           .showVideoPreview(false)
+          .showPredictionPoints(false)
           .begin();
       
           setIsInitialized(true);
