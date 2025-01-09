@@ -23,6 +23,14 @@ const LandingPage: React.FC = () => {
         setIndex(selectedIndex);
     };
 
+    const carouselItemStyle = {
+        height: '100%',
+        minHeight: '620px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    };
+
     return (
         <Container
             fluid
@@ -49,13 +57,15 @@ const LandingPage: React.FC = () => {
                     activeIndex={index}
                     onSelect={handleSelect}
                     data-bs-theme="dark"
-                    className="d-flex align-items-center justify-content-center h-100"
+                    interval={null}
+                    prevIcon={index === 0 ? null : <span aria-hidden="true" className="carousel-control-prev-icon" />}
+                    nextIcon={index === 3 ? null : <span aria-hidden="true" className="carousel-control-next-icon" />}
                     style={{ height: '100%' }}
                 >
                     <Carousel.Item>
-                        <div className="d-flex align-items-center justify-content-center h-100">
+                        <div style={carouselItemStyle}>
                             <div style={{ width: '55%' }} className="text-center">
-                            <h4 className="mb-3 fw-bold">Eye-Tracker Calibration</h4>
+                                <h4 className="mb-3 fw-bold">Eye-Tracker Calibration</h4>
                                 <p className="mb-5">
                                     Before we begin, you need to calibrate the eye tracker. Please ensure that you allow camera access, sit up straight, and make sure there is appropriate lighting in your environment. You will be asked to click on 9 dots on the screen before starting the survey.
                                 </p>
@@ -72,7 +82,7 @@ const LandingPage: React.FC = () => {
                     </Carousel.Item>
 
                     <Carousel.Item>
-                        <div className="d-flex align-items-center justify-content-center h-100">
+                        <div style={carouselItemStyle}>
                             <div style={{ width: '55%' }} className="text-center">
                                 <h4 className="mb-3 fw-bold">Observe Driving Footage</h4>
                                 <p className="mb-5">
@@ -93,9 +103,9 @@ const LandingPage: React.FC = () => {
                     </Carousel.Item>
 
                     <Carousel.Item>
-                        <div className="d-flex align-items-center justify-content-center h-100">
+                        <div style={carouselItemStyle}>
                             <div style={{ width: '55%' }} className="text-center">
-                            <h4 className="mb-3 fw-bold">Post-Simulation Survey</h4>
+                                <h4 className="mb-3 fw-bold">Post-Simulation Survey</h4>
                                 <p className="mb-5">
                                     After reviewing the driving footage, you will answer questions related to the content. These questions assess your ability to identify key events and driving behaviors, helping train the model to align with human judgment and decision-making in driving scenarios
                                 </p>
@@ -112,7 +122,7 @@ const LandingPage: React.FC = () => {
                     </Carousel.Item>
 
                     <Carousel.Item>
-                        <div className="d-flex align-items-center justify-content-center h-100">
+                        <div style={carouselItemStyle}>
                             <div style={{ width: '55%' }} className="text-center">
                                 <p className="mb-1">
                                     Thank you for participating in this survey. Your contributions are valuable to our research!

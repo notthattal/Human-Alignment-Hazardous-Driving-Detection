@@ -1,22 +1,41 @@
 import React, { useState } from "react";
 import { QuestionsFormData, QuestionsProps } from "../../utils/interfaces";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
+import { useWebGazer } from "../../hooks/useWebGazer";
+import usePostResults from "../../hooks/usePostResults";
 
-const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted }) => {
+const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
+    const { finalGazeData, resetFinalGazeData } = useWebGazer();
+    const { postResults } = usePostResults();
     const [formData, setFormData] = useState<QuestionsFormData>({
         hazardDetected: '',
         noDetectionReason: '',
         detectionConfidence: 0,
         hazardSeverity: 0,
-        hazardDescription: '',
         attentionFactors: [] as string[]
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (onFormSumbitted) {
             onFormSumbitted();
+        }
+
+        console.log(finalGazeData)
+
+        const results = {
+            userId: 0,
+            videoId: videoId,
+            gaze: finalGazeData,
+            formData: formData
+        }
+
+        try {
+            await postResults(results)
+            resetFinalGazeData();
+        } catch (error: unknown) {
+            console.log('An error has occured while posting the survey results.')
         }
     }
 
@@ -60,7 +79,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted }) => {
                 <div>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className='mb-4'>
-                            <Form.Label>Did you press the spacebar at the instance you detected a hazardous instance?</Form.Label>
+                            <Form.Label>Did you press the spacebar when you detected a hazardous instance?</Form.Label>
                             <div>
                                 <Form.Check
                                     type="radio"
@@ -100,7 +119,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted }) => {
                                 </Form.Group>
 
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how confident are you that the hazard(s) you identified were genuinely dangerous?</Form.Label>
+                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how confident are you that the situation was not hazardous?</Form.Label>
                                     <Form.Select
                                         name="detectionConfidence"
                                         value={formData.detectionConfidence}
@@ -134,15 +153,18 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted }) => {
                                 </Form.Group>
 
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>What did you perceive as the most significant hazard in the video?</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        name="hazardDescription"
-                                        value={formData.hazardDescription}
+                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how confident are you that the hazard(s) you identified were genuinely dangerous?</Form.Label>
+                                    <Form.Select
+                                        name="detectionConfidence"
+                                        value={formData.detectionConfidence}
                                         onChange={handleChange}
                                         required
-                                    />
+                                    >
+                                        <option value="">Select confidence level</option>
+                                        {[1, 2, 3, 4, 5].map(num => (
+                                            <option key={num} value={num}>{num}</option>
+                                        ))}
+                                    </Form.Select>
                                 </Form.Group>
 
                                 <Form.Group className='mb-4'>
