@@ -4,8 +4,10 @@ import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
+import { useNavigate } from "react-router-dom";
 
 const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
+    const navigate = useNavigate();
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
     const [formData, setFormData] = useState<QuestionsFormData>({
@@ -46,7 +48,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
             const currentFactors = [...(formData.attentionFactors || [])];
-            
+
             if (checked) {
                 currentFactors.push(value);
             } else {
@@ -55,7 +57,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                     currentFactors.splice(index, 1);
                 }
             }
-            
+
             updatedValue = currentFactors;
         } else {
             updatedValue = value;
@@ -67,8 +69,19 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         }));
     };
 
+    const handleEndSurvey = () => {
+        navigate('/landingpage')
+    }
+
     return (
         <div className={styles.container}>
+            <Button
+                variant="danger"
+                className="position-absolute top-0 end-0 m-2"
+                onClick={handleEndSurvey}
+            >
+                End Survey
+            </Button>
             <div className={styles.containerWrapper}>
                 <div className={styles.title}>
                     Post-Simulation Survey
@@ -170,12 +183,12 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                                 <Form.Group className='mb-4'>
                                     <Form.Label>What specific factors drew your attention to the hazard(s) you detected?</Form.Label>
                                     {[
-                                        {label: 'Movement', value: 'motion'},
-                                        {label: 'Speed', value: 'velocity'},
-                                        {label: 'Proximity to the vehicle', value: 'proximity'},
-                                        {label: 'Environmental conditions', value: 'environment'},
-                                        {label: 'Unusual behavior', value: 'anomaly'},
-                                        {label: 'Other', value: 'other'}
+                                        { label: 'Movement', value: 'motion' },
+                                        { label: 'Speed', value: 'velocity' },
+                                        { label: 'Proximity to the vehicle', value: 'proximity' },
+                                        { label: 'Environmental conditions', value: 'environment' },
+                                        { label: 'Unusual behavior', value: 'anomaly' },
+                                        { label: 'Other', value: 'other' }
                                     ].map((factor) => (
                                         <Form.Check
                                             key={factor.value}
