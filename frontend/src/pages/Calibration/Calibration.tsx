@@ -3,14 +3,14 @@ import { useWebGazer } from "../../hooks/useWebGazer";
 import styles from './Calibration.module.css';
 
 const Calibration: React.FC = () => {
-    const { startWebGazer, setIsCalibrated } = useWebGazer();
+    const { startWebGazer, setIsCalibrated, stopWebGazer } = useWebGazer();
     const [currentX, setCurrentX] = useState(100);
     const [currentY, setCurrentY] = useState(100);
     const [currentCoordinate, setCurrentCoordinate] = useState(0);
     const [currentClicks, setCurrentClicks] = useState(0);
 
     const setNextCoordinate = () => {
-        if (currentCoordinate == coordinates.length + 1) {
+        if (currentCoordinate == coordinates.length && currentClicks == 5) {
             setIsCalibrated(true);
         };
 
@@ -37,11 +37,15 @@ const Calibration: React.FC = () => {
 
     useEffect(() => {
         startWebGazer();
+
+        return () => {
+            stopWebGazer();
+        }
     }, [])
 
     return (
         <div className={styles.calibrationPoint}
-            style={{ left: `${currentX}px`, top: `${currentY}px`, opacity: `${ Math.max(currentClicks / 6, 0.3)}`}}
+            style={{ left: `${currentX}px`, top: `${currentY}px`, opacity: `${Math.max(currentClicks / 6, 0.3)}` }}
             onClick={setNextCoordinate}>
             {currentClicks}
         </div>
