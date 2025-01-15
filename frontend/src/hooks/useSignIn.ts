@@ -6,17 +6,17 @@ const useSignIn = () => {
     const { dispatch } = useAuth();
 
     const signIn = async (signInFormData: SignInFormData) => {
-        axios.post('http://localhost:3001/auth/signIn', (signInFormData))
-            .then((payload) => {
-                console.log('User has successfully signed in!', payload)
+        try {
+            const response = await axios.post('http://localhost:3001/auth/signIn', signInFormData);
+            console.log('User has successfully signed in!', response);
 
-                localStorage.setItem('user', JSON.stringify(payload.data))
-                dispatch({type: 'LOGIN', payload: payload.data});
-            })
-            .catch((err) => {
-                console.log(`An error has occurred while signing in, ${err}`)
-            })
-    }
+            localStorage.setItem('user', JSON.stringify(response.data));
+            dispatch({ type: 'LOGIN', payload: response.data });
+        } catch (error) {
+            throw new Error(`An error has occurred while signing in: ${error}`);
+        }
+    };
+
     return { signIn }
 }
 
