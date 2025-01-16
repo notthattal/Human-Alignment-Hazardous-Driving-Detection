@@ -4,12 +4,13 @@ import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
-import { useNavigate } from "react-router-dom";
+import useSignOut from "../../hooks/useSignOut";
 
 const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
-    const navigate = useNavigate();
+    const { signOut } = useSignOut();
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
+
     const [formData, setFormData] = useState<QuestionsFormData>({
         hazardDetected: '',
         noDetectionReason: '',
@@ -24,20 +25,27 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
             onFormSumbitted();
         }
 
-        console.log(finalGazeData)
+        const userItem = localStorage.getItem('user')
 
-        const results = {
-            userId: 0,
-            videoId: videoId,
-            gaze: finalGazeData,
-            formData: formData
-        }
+        if (userItem) {
+            const user = JSON.parse(userItem)
+            const userId = user.email
 
-        try {
-            await postResults(results)
-            resetFinalGazeData();
-        } catch (error: unknown) {
-            console.log('An error has occured while posting the survey results.')
+            const results = {
+                userId: userId,
+                videoId: videoId,
+                gaze: finalGazeData,
+                formData: formData
+            }
+
+            try {
+                await postResults(results)
+                resetFinalGazeData();
+            } catch (error: unknown) {
+                console.log('An error has occured while posting the survey results.')
+            }
+        } else {
+            throw new Error('Authorization Error')
         }
     }
 
@@ -70,7 +78,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
     };
 
     const handleEndSurvey = () => {
-        navigate('/landingpage')
+        signOut();
     }
 
     return (

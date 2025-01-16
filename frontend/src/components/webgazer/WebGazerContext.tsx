@@ -62,7 +62,6 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
     if (webgazerInstance.current) {
 
       setFinalGazeData(gazeData);
-      console.log('Final gaze data:', finalGazeData);
       
       window.webgazer.end();
       setIsInitialized(false);
@@ -75,7 +74,7 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
   }
 
   return (
-    <WebGazerContext.Provider 
+    <WebGazerContext.Provider
       value={{
         isCalibrated,
         isInitialized,

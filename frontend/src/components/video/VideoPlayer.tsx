@@ -29,18 +29,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
         try {
             setLoading(true);
             const response = await fetch('http://localhost:3001/api/videos/random');
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data: VideoData = await response.json();
             console.log('Received video data:', data);
-            
+
             if (!data.url) {
                 throw new Error('No video URL in response');
             }
-            
+
             setVideoUrl(data.url);
 
             if (data.videoId) {
@@ -80,8 +80,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <Spinner animation="border" variant="dark" />
+            <div style={{ minHeight: '100vh', minWidth: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Spinner
+                    animation="border"
+                    variant="dark"
+                    style={{ width: '5rem', height: '5rem' }}
+                />
             </div>
         );
     }

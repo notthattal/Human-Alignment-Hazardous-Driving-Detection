@@ -15,13 +15,14 @@ const SignInPage: React.FC = () => {
         email: '',
         password: '',
     });
+    const [error, setError] = useState('')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             await signIn(formData);
         } catch (err) {
-            console.error('Error during sign-in:', err);
+            setError('The password or email you entered was incorrect, please try again.')
         }
     };
 
@@ -71,6 +72,12 @@ const SignInPage: React.FC = () => {
                                 required
                             />
                         </Form.Group>
+
+                        {error && (
+                            <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
+                                {error}
+                            </div>
+                        )}
 
                         <Button variant="dark" type="submit" className="w-100">
                             Sign In

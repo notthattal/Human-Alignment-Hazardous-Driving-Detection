@@ -16,17 +16,18 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
 };
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(authReducer, { user: null });
+    const initialUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const [state, dispatch] = useReducer(authReducer, { 
+        user: initialUser 
+    });
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user') || 'null')
         
-        if (user) {
+        if (user && !state.user) { 
             dispatch({ type: 'LOGIN', payload: user })
         }
     }, [])
-
-    console.log('Authentication State:', state)
 
     return (
         <AuthContext.Provider value={{ ...state, dispatch }}>
