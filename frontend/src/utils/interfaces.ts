@@ -19,8 +19,39 @@ export interface WebGazerContextType {
     isCalibrated: boolean;
     isInitialized: boolean;
     gazeData: GazeData[];
+    finalGazeData: GazeData[];
     startWebGazer: () => Promise<void>;
     stopWebGazer: () => void;
     setIsCalibrated: (value: boolean) => void;
+    resetFinalGazeData: () => void;
 }
 
+export interface VideoData {
+    url: string;
+    videoId: string;
+}
+
+export interface VideoPlayerProps {
+    onVideoComplete?: () => void;
+    passVideoId: (id: string) => void;
+}
+
+export interface QuestionsProps {
+    videoId: string,
+    onFormSumbitted?: () => void;
+}
+
+export interface QuestionsFormData {
+    hazardDetected: string;         
+    noDetectionReason: string;      
+    detectionConfidence: number;    
+    hazardSeverity: number;         
+    attentionFactors: string[];
+}
+
+export interface SurveyResults {
+    userId: number,
+    videoId: string,
+    gaze: GazeData[],
+    formData: QuestionsFormData
+}

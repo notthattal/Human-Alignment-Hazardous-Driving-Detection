@@ -43,6 +43,7 @@ const App: React.FC = () => {
                     !isCalibrated ? <Navigate to='/calibration' /> : <Survey />
                 } 
             />
+            
     </Routes>
   )
 }

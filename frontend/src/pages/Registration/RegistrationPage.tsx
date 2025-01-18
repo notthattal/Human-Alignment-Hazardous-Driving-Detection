@@ -97,7 +97,7 @@ const RegistrationPage: React.FC = () => {
 
     const handleNavigate = () => {
         navigate('/')
-    }
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -129,7 +129,7 @@ const RegistrationPage: React.FC = () => {
     const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const password = e.target.value;
         setConfirmedPassword(password)
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -225,10 +225,15 @@ const RegistrationPage: React.FC = () => {
                                     name="age"
                                     min="0"
                                     max="150"
-                                    value={formData.age}
+                                    value={formData.age || ''} 
                                     onChange={(e) => {
-                                        const value = Math.max(0, Math.min(150, Number(e.target.value))); // Restrict to 0-150
-                                        setFormData({ ...formData, age: value });
+                                        const inputValue = e.target.value;
+                                        if (inputValue === '') {
+                                            setFormData({ ...formData, age: 0 });
+                                        } else {
+                                            const value = Math.max(0, Math.min(150, Number(inputValue)));
+                                            setFormData({ ...formData, age: value });
+                                        }
                                     }}
                                 />
                             </Form.Group>
@@ -265,7 +270,7 @@ const RegistrationPage: React.FC = () => {
 
                         {/* License Age */}
                         <Form.Group className="mb-4" controlId="formLicenseAge">
-                            <Form.Label>How many years have you been driving for?</Form.Label>
+                            <Form.Label>At what age did you obtain your drivers license (approximately)?</Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="Enter age"

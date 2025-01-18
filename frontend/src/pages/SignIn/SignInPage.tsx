@@ -5,36 +5,29 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
 import { SignInFormData } from '../../utils/types';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useSignIn from '../../hooks/useSignIn';
+import { Container } from 'react-bootstrap';
 
 const SignInPage: React.FC = () => {
-    const navigate = useNavigate();
     const { signIn } = useSignIn();
-
     const [formData, setFormData] = useState<SignInFormData>({
         email: '',
         password: '',
     });
+    const [error, setError] = useState('')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
-
         try {
-            await signIn(formData)
-        } catch (err: unknown) {
-            console.log('An error has occured during registration', err)
+            await signIn(formData);
+        } catch (err) {
+            setError('The password or email you entered was incorrect, please try again.')
         }
     };
 
-    const handleNavigate = () => {
-        navigate('/registration')
-    }
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-
         setFormData((prevState) => ({
             ...prevState,
             [name]: value,
@@ -42,17 +35,21 @@ const SignInPage: React.FC = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.containerWrapper}>
-                <div className={styles.title}>
-                    Welcome to the Human-Aligned Hazard Detection Survey.
-                </div>
-                <div className={styles.content}>
-                    Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
-                </div>
-                <div>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group className='mb-4' controlId="formGridEmail" >
+        <Container fluid className="vh-100">
+            <Row className="h-100">
+                {/* First Column */}
+                <Col
+                    md={6}
+                    className="d-flex flex-column justify-content-center align-items-center px-5">
+                    <h1 className={`${styles.title} mb-4 text-center`}>
+                        Welcome to the Human-Aligned Hazard Detection Survey.
+                    </h1>
+                    <p className={`${styles.content} mb-4 text-center`}>
+                        Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
+                    </p>
+
+                    <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px' }}>
+                        <Form.Group className="mb-3" controlId="formGridEmail">
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 type="email"
@@ -64,36 +61,38 @@ const SignInPage: React.FC = () => {
                             />
                         </Form.Group>
 
-                        <Row className='mb-4'>
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Enter Password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                        </Row>
+                        <Form.Group className="mb-3" controlId="formGridPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter Password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
 
-                        <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%' }}>
+                        {error && (
+                            <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
+                                {error}
+                            </div>
+                        )}
+
+                        <Button variant="dark" type="submit" className="w-100">
                             Sign In
                         </Button>
-                        <Button 
-                            variant="primary" 
-                            type="submit" 
-                            style={{ width: '100%' }} 
-                            onClick={handleNavigate}
-                            >
-                            Register
-                        </Button>
+                        <p className="mt-3 text-center fst-italic">
+                            Don't have an account? <Link to="/registration">Sign up</Link>
+                        </p>
                     </Form>
-                </div>
-            </div>
-        </div>
-    )
-}
+                </Col>
+
+                {/* Second Column */}
+                <Col md={6} className="bg-dark" />
+            </Row>
+        </Container>
+    );
+};
 
 export default SignInPage;
