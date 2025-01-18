@@ -1,8 +1,15 @@
 // routes/videos.js
 const express = require('express');
 const router = express.Router();
+const { S3Client, ListObjectsV2Command, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getRandomVideo } = require('../services/videoService');
 
+<<<<<<< HEAD
+=======
+// Import the s3Client from videoService
+const { s3Client } = require('../services/videoService');
+
+>>>>>>> 651bb7c4c7832910329ff0d5f876b6505d6bac14
 // Test route to verify S3 connection
 router.get('/test-s3', async (req, res) => {
   try {
@@ -33,6 +40,7 @@ router.get('/test-s3', async (req, res) => {
       code: error.code
     });
   }
+<<<<<<< HEAD
 });
 
 router.get('/random', async (req, res) => {
@@ -49,6 +57,25 @@ router.get('/random', async (req, res) => {
     res.status(500).json({ 
       error: 'Failed to get video',
       details: error.message // Add this for debugging
+    });
+  }
+=======
+>>>>>>> 651bb7c4c7832910329ff0d5f876b6505d6bac14
+});
+
+router.get('/random', async (req, res) => {
+  try {
+    const video = await getRandomVideo();
+    res.json(video);
+  } catch (error) {
+    console.error('Error in /random route:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    });
+    res.status(500).json({ 
+      error: 'Failed to get video',
+      details: error.message
     });
   }
 });
