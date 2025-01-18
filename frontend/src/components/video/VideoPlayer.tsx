@@ -28,7 +28,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
     const fetchRandomVideo = async (): Promise<void> => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:3001/api/videos/random');
+            const response = await fetch('https://human-alignment-hazardous-driving.onrender.com/api/videos/random');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -102,7 +102,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
                     onTimeUpdate={handleTimeUpdate}
                     onPlay={handleBeginWebGazer}
                     style={{ maxWidth: '100vw', maxHeight: '100vh' }}
-                    key={videoUrl}
                 >
                     <source src={videoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
