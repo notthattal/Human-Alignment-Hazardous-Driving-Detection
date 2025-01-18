@@ -10,7 +10,6 @@ const formSchema = new mongoose.Schema({
     carMakeModel: { type: String, required: true },
     gender: { type: String, required: true },
     speedingTicket: { type: Boolean, default: false },
-    dui: { type: Boolean, default: false },
     visuallyImpaired: { type: Boolean, default: false },
 });
 

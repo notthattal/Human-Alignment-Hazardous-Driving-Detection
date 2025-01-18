@@ -23,7 +23,6 @@ const RegistrationPage: React.FC = () => {
         carMakeModel: '',
         gender: '',
         speedingTicket: false,
-        dui: false,
         visuallyImpaired: false
     });
 
@@ -321,41 +320,6 @@ const RegistrationPage: React.FC = () => {
                                         setFormData(prevState => ({
                                             ...prevState,
                                             visuallyImpaired: value
-                                        }));
-                                    }}
-                                />
-                            </div>
-                        </Form.Group>
-
-                        {/* DUI */}
-                        <Form.Group className="mb-4" controlId="formDUI">
-                            <Form.Label>Have you ever had a DUI?</Form.Label>
-                            <div>
-                                <Form.Check
-                                    type="radio"
-                                    label="Yes"
-                                    name="dui"
-                                    value="true"
-                                    checked={formData.dui === true}
-                                    onChange={(e) => {
-                                        const value = e.target.value === "true";
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            dui: value
-                                        }));
-                                    }}
-                                />
-                                <Form.Check
-                                    type="radio"
-                                    label="No"
-                                    name="dui"
-                                    value="false"
-                                    checked={formData.dui === false}
-                                    onChange={(e) => {
-                                        const value = e.target.value === "true";
-                                        setFormData(prevState => ({
-                                            ...prevState,
-                                            dui: value
                                         }));
                                     }}
                                 />
