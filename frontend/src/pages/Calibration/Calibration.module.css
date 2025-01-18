@@ -8,9 +8,14 @@
     font-family: 'Roboto', sans-serif;
     text-align: center;
     display: flex;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     user-select: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border: 2px solid grey;
+    -webkit-user-select: none; /* Safari, Chrome */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer */
+    user-select: none;         /* Standard */
 }

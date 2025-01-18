@@ -15,7 +15,7 @@ const formSchema = new mongoose.Schema({
 });
 
 const resultSchema = new mongoose.Schema({
-    userId: Number,
+    userId: String,
     videoId: String,
     gaze: { type: [gazeSchema] },
     formData: formSchema
