@@ -25,10 +25,10 @@ const LandingPage: React.FC = () => {
 
     const carouselItemStyle = {
         height: '100%',
-        minHeight: '620px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: '7rem 0',
     };
 
     return (
@@ -42,8 +42,12 @@ const LandingPage: React.FC = () => {
                 onClick={signOut}>
                 Sign Out
             </Button>
-            <div style={{ position: 'absolute', top: '5%', left: '8%'}}>
-                <p style={{ fontWeight: 'bold', fontSize: '1.4rem', fontStyle: 'italic' }}>Survey Instructions</p>
+            <div style={{ position: 'absolute', top: '5%', left: '8%' }}>
+                <p className="fw-bold fst-italic" style={{
+                    fontSize: 'clamp(2rem, 2vw, 1.6rem)'
+                }}>
+                    Survey Instructions
+                </p>
             </div>
             <div
                 className="position-absolute top-50 start-50 translate-middle"
@@ -64,84 +68,112 @@ const LandingPage: React.FC = () => {
                 >
                     <Carousel.Item>
                         <div style={carouselItemStyle}>
-                            <div style={{ width: '55%' }} className="text-center">
+                            <div style={{ width: 'min(45%, 1200px)' }} className="text-center">
                                 <div className='d-flex align-items-center justify-content-center gap-3 mb-4'>
-                                    <i className="bi bi-1-square fs-4 d-inline-flex align-middle"></i>
-                                    <h4 className="fw-bold m-0 d-inline-flex align-middle">Eye-Tracker Calibration</h4>
+                                    <i className="bi bi-1-square" style={{ fontSize: 'clamp(1.7rem, 1.5vw, 1.5rem)' }}></i>
+                                    <h4 className="fw-bold m-0" style={{ fontSize: 'clamp(1.4rem, 2vw, 2rem)' }}>
+                                        Eye-Tracker Calibration
+                                    </h4>
                                 </div>
-                                <p className="mb-5">
+                                <p className="mb-5" style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}>
                                     Before we begin, you need to calibrate the eye tracker. Please ensure that you allow camera access, sit up straight, and make sure there is appropriate lighting in your environment. You will be asked to click on 9 dots on the screen before starting the survey.
                                 </p>
-                                <video
-                                    src={calibrationTutorial}
-                                    className="w-100"
-                                    style={{ maxWidth: '650px', height: 'auto' }}
-                                    autoPlay
-                                    loop
-                                    muted
-                                />
+                                <div className="d-flex justify-content-center">
+                                    <video
+                                        src={calibrationTutorial}
+                                        style={{
+                                            width: 'min(100%, 900px)',
+                                            height: 'auto',
+                                            minHeight: '200px'
+                                        }}
+                                        autoPlay
+                                        loop
+                                        muted
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Carousel.Item>
 
                     <Carousel.Item>
                         <div style={carouselItemStyle}>
-                            <div style={{ width: '55%' }} className="text-center">
+                            <div style={{ width: 'min(45%, 1200px)' }} className="text-center">
                                 <div className='d-flex align-items-center justify-content-center gap-3 mb-4'>
-                                    <i className="bi bi-2-square fs-4 d-inline-flex align-middle"></i>
-                                    <h4 className="fw-bold m-0 d-inline-flex align-middle">Observe Driving Footage</h4>
+                                    <i className="bi bi-2-square" style={{ fontSize: 'clamp(1.7rem, 1.5vw, 1.5rem)' }}></i>
+                                    <h4 className="fw-bold m-0" style={{ fontSize: 'clamp(1.4rem, 2vw, 2rem)' }}>
+                                        Observe Driving Footage
+                                    </h4>
                                 </div>
-                                <p className="mb-5">
+                                <p className="mb-5" style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}>
                                     Once you've completed the eye-tracker calibration, you'll watch a video of driving footage.
                                     Simply observe naturally as if you were behind the wheel. Your eye movements will be tracked to understand
                                     how drivers scan their environment. Please maintain your seated position throughout the video.
                                 </p>
-                                <video
-                                    src={simulationVideo}
-                                    className="w-100"
-                                    style={{ maxWidth: '650px', height: 'auto' }}
-                                    autoPlay
-                                    loop
-                                    muted
-                                />
+                                <div className="d-flex justify-content-center">
+                                    <video
+                                        src={simulationVideo}
+                                        style={{
+                                            width: 'min(100%, 900px)',
+                                            height: 'auto',
+                                            minHeight: '200px'
+                                        }}
+                                        autoPlay
+                                        loop
+                                        muted
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Carousel.Item>
 
                     <Carousel.Item>
                         <div style={carouselItemStyle}>
-                            <div style={{ width: '55%' }} className="text-center">
+                            <div style={{ width: 'min(45%, 1200px)' }} className="text-center">
                                 <div className='d-flex align-items-center justify-content-center gap-3 mb-4'>
-                                    <i className="bi bi-3-square fs-4 d-inline-flex align-middle"></i>
-                                    <h4 className="fw-bold m-0 d-inline-flex align-middle">Post-Simulation Survey</h4>
+                                    <i className="bi bi-3-square" style={{ fontSize: 'clamp(1.7rem, 1.5vw, 1.5rem)' }}></i>
+                                    <h4 className="fw-bold m-0" style={{ fontSize: 'clamp(1.4rem, 2vw, 2rem)' }}>
+                                        Post-Simulation Survey
+                                    </h4>
                                 </div>
-                                <p className="mb-5">
+                                <p className="mb-5" style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}>
                                     After reviewing the driving footage, you will answer questions related to the content. These questions assess your ability to identify key events and driving behaviors, helping train the model to align with human judgment and decision-making in driving scenarios
                                 </p>
-                                <video
-                                    src={questionnaireTutorial}
-                                    className="w-100"
-                                    style={{ maxWidth: '650px', height: 'auto' }}
-                                    autoPlay
-                                    loop
-                                    muted
-                                />
+                                <div className="d-flex justify-content-center">
+                                    <video
+                                        src={questionnaireTutorial}
+                                        style={{
+                                            width: 'min(100%, 900px)',
+                                            height: 'auto',
+                                            minHeight: '200px'
+                                        }}
+                                        autoPlay
+                                        loop
+                                        muted
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Carousel.Item>
 
                     <Carousel.Item>
-                        <div style={carouselItemStyle}>
-                            <div style={{ width: '55%' }} className="text-center">
-                                <p className="mb-1">
+                        <div style={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '20rem 0',
+                        }}>
+                            <div style={{ width: 'min(45%, 1200px)' }} className="text-center">
+                                <p className="mb-1" style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}>
                                     Thank you for participating in this survey. Your contributions are valuable to our research!
                                 </p>
-                                <p className="mb-5">
+                                <p className="mb-5" style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}>
                                     Repeat steps 2 and 3 for as many images as possible. Every answer is greatly appreciated!
                                 </p>
                                 <Button
                                     variant="dark"
                                     onClick={handleBeginCalibration}
+                                    style={{ fontSize: 'clamp(1rem, 1.2vw, 1.2rem)' }}
                                 >
                                     Begin Calibration
                                 </Button>
