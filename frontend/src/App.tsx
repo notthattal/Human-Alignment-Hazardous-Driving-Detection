@@ -8,7 +8,6 @@ import Calibration from './pages/Calibration/Calibration';
 import Survey from './pages/Survey/Survey';
 import { useWebGazer } from './hooks/useWebGazer';
 import { useEffect } from 'react';
-import Questions from './pages/Questions/Questions';
 
 const App: React.FC = () => {
 

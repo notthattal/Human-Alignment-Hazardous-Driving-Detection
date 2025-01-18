@@ -6,7 +6,7 @@ const useRegister = () => {
     const { dispatch } = useAuth();
 
     const registerUser = async (registrationFormData: RegistrationFormData) => {
-        axios.post('http://localhost:3001/auth/register', registrationFormData)
+        axios.post('https://human-alignment-hazardous-driving.onrender.com/auth/register', registrationFormData)
             .then((payload) => {
                 console.log('User has successfully registered!', payload);
 

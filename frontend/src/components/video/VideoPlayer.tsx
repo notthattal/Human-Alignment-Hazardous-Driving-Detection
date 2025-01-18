@@ -28,7 +28,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
     const fetchRandomVideo = async (): Promise<void> => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:3001/api/videos/random');
+            const response = await fetch('https://human-alignment-hazardous-driving.onrender.com/api/videos/random');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
