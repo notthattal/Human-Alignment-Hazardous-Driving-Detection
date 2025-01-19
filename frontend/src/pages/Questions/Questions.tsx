@@ -6,7 +6,7 @@ import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
 import useSignOut from "../../hooks/useSignOut";
 
-const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
+const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
     const { signOut } = useSignOut();
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
@@ -16,7 +16,8 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         noDetectionReason: '',
         detectionConfidence: 0,
         hazardSeverity: 0,
-        attentionFactors: [] as string[]
+        attentionFactors: [] as string[],
+        spacebarTimestamps: spacebarTimestamps || []
     });
 
     const handleSubmit = async (e: React.FormEvent) => {

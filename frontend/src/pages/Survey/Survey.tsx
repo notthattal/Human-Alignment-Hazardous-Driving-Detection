@@ -5,10 +5,12 @@ import Questions from "../Questions/Questions";
 const Survey: React.FC = () => {
     const [videoPlaying, setVideoPlaying] = useState<boolean>(true);
     const [videoId, setVideoId] = useState('');
+    const [spacebarTimestamps, setSpacebarTimestamps] = useState<number[]>([]);
+    
 
     const handleVideoComplete = () => {
         setVideoPlaying(false);
-    }
+    } 
 
     const handleFormSubmitted = () => {
         setVideoPlaying(true);
@@ -18,13 +20,17 @@ const Survey: React.FC = () => {
         setVideoId(videoId);
     }
 
+    const handleSpacebarTimestamps = (spacebarTimestamps: number[]) => {
+        setSpacebarTimestamps(spacebarTimestamps) 
+    }
+
     if (videoPlaying) {
         return (
-            <VideoPlayer onVideoComplete={handleVideoComplete} passVideoId={handleVideoId} />
+            <VideoPlayer onVideoComplete={handleVideoComplete} passVideoId={handleVideoId} passSpacebarTimestamps={handleSpacebarTimestamps} />
         )
     } else {
         return (
-            <Questions onFormSumbitted={handleFormSubmitted} videoId={videoId} />
+            <Questions onFormSumbitted={handleFormSubmitted} videoId={videoId} spacebarTimestamps={spacebarTimestamps}/>
         )
     }
 };
