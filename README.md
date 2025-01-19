@@ -83,9 +83,4 @@ For questions or collaboration opportunities, please reach out!
 
 ---
 
-## License
-*(Include applicable license information here.)*
-
----
-
 **This research is made possible due to collaboration between Duke University & Onyx AI LLC.**
