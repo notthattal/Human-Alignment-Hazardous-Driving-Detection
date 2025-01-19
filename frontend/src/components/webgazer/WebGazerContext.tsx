@@ -18,7 +18,6 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
     const currentTime = Date.now();
     
     if (currentTime - lastLogTime.current >= LOGGING_INTERVAL) {
-      console.log(currentTime - lastLogTime.current, 'INTERVAL LENGTH')
       const timestampedData = {
         ...data,
         timestamp: currentTime,
