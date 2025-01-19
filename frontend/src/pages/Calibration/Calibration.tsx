@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useWebGazer } from "../../hooks/useWebGazer";
 import styles from './Calibration.module.css';
 
 const Calibration: React.FC = () => {
     const { startWebGazer, setIsCalibrated, stopWebGazer } = useWebGazer();
-    const [currentX, setCurrentX] = useState(100);
-    const [currentY, setCurrentY] = useState(100);
-    const [currentCoordinate, setCurrentCoordinate] = useState(0);
-    const [currentClicks, setCurrentClicks] = useState(0);
-
     const coordinates = [
         { x: 100, y: 100 }, 
         { x: window.innerWidth / 2, y: 100 }, 
@@ -18,60 +13,64 @@ const Calibration: React.FC = () => {
         { x: window.innerWidth - 100, y: window.innerHeight / 2 }, 
         { x: 100, y: window.innerHeight - 100 }, 
         { x: window.innerWidth / 2, y: window.innerHeight - 100 }, 
-        { x: window.innerWidth - 100, y: window.innerHeight - 100 }, 
+        { x: window.innerWidth - 100, y: window.innerHeight - 100 },
     ];
 
-    const setNextCoordinate = () => {
-        const nextClicks = currentClicks + 1;
-        
-        if (currentCoordinate === coordinates.length - 1 && nextClicks === 5) {
-            setIsCalibrated(true);
-            return;
-        }
+    const [calibrationState, setCalibrationState] = useState({
+        x: 100,
+        y: 100,
+        coordinate: 0,
+        clicks: 0,
+    });
 
-        if (nextClicks === 5) {
-            const nextCoordinate = currentCoordinate + 1;
-            if (nextCoordinate < coordinates.length) {
-                setCurrentClicks(0);
-                setCurrentCoordinate(nextCoordinate);
-                setCurrentX(coordinates[nextCoordinate].x);
-                setCurrentY(coordinates[nextCoordinate].y);
+    const setNextCoordinate = useCallback(() => {
+        setCalibrationState((prev) => {
+            const nextClicks = prev.clicks + 1;
+            const isLastPoint = prev.coordinate === coordinates.length - 1;
+
+            if (isLastPoint && nextClicks === 5) {
+                setIsCalibrated(true);
+                return prev;
             }
-        } else {
-            setCurrentClicks(nextClicks);
-        }
-    };
+
+            if (nextClicks === 5) {
+                const nextCoordinate = prev.coordinate + 1;
+                return {
+                    x: coordinates[nextCoordinate]?.x,
+                    y: coordinates[nextCoordinate]?.y,
+                    coordinate: nextCoordinate,
+                    clicks: 0,
+                };
+            }
+
+            return { ...prev, clicks: nextClicks };
+        });
+    }, [coordinates, setIsCalibrated]);
 
     useEffect(() => {
-        // Set initial position
-        if (coordinates.length > 0) {
-            setCurrentX(coordinates[0].x);
-            setCurrentY(coordinates[0].y);
-        }
-
         startWebGazer();
-
-        return () => {
-            stopWebGazer();
-        }
+        return () => stopWebGazer();
     }, []);
 
-    const opacity = Math.max(currentClicks / 6, 0.3);
+    const handleDotClick = () => {
+        setNextCoordinate();
+    };
 
     return (
-        <div 
+        <div
             className={styles.calibrationPoint}
-            style={{ 
+            style={{
                 position: 'absolute',
-                left: `${currentX}px`, 
-                top: `${currentY}px`, 
-                opacity: opacity 
+                left: `${calibrationState.x}px`,
+                top: `${calibrationState.y}px`,
+                opacity: Math.max(calibrationState.clicks / 6, 0.3),
+                zIndex: 1000,
             }}
-            onClick={setNextCoordinate}
+            onClick={handleDotClick}
         >
-            {currentClicks}
+            {calibrationState.clicks}
         </div>
     );
-}
+};
 
 export default Calibration;
