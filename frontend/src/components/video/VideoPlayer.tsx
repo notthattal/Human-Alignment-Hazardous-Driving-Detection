@@ -3,16 +3,19 @@ import { VideoData, VideoPlayerProps } from '../../utils/interfaces';
 import { Spinner } from 'react-bootstrap';
 import { useWebGazer } from '../../hooks/useWebGazer';
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId, passSpacebarTimestamps }) => {
     const { startWebGazer, stopWebGazer, isInitialized } = useWebGazer();
     const videoRef = useRef<HTMLVideoElement>(null);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [flashActive, setFlashActive] = useState<boolean>(false);
+    const [spacebarTimestamps, setSpacebarTimestamps] = useState<number[]>([]);
 
     const handleVideoFinished = useCallback(() => {
         if (isInitialized) {
             stopWebGazer();
         }
+        passSpacebarTimestamps(spacebarTimestamps);
         onVideoComplete?.();
     }, [isInitialized, stopWebGazer, onVideoComplete]);
 
@@ -68,6 +71,24 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
         }
     };
 
+    const handleKeyPress = useCallback((event: KeyboardEvent) => {
+        if (event.code === "Space" && videoRef.current) {
+            setFlashActive(true);
+            setTimeout(() => setFlashActive(false), 100);
+            const currentTime = videoRef.current.currentTime;
+            setSpacebarTimestamps((prev) => [...prev, currentTime]);
+            console.log(`Spacebar pressed at: ${currentTime.toFixed(2)} seconds`);
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyPress);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [handleKeyPress]);
+
     useEffect(() => {
         fetchRandomVideo();
 
@@ -107,6 +128,30 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId 
                     Your browser does not support the video tag.
                 </video>
             )}
+            {flashActive && (
+                <div
+                    className="flash-overlay"
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "rgba(255, 255, 255, 0.75)",
+                        animation: "flashFade 0.3s ease-in-out",
+                        pointerEvents: "none",
+                    }}
+                />
+            )}
+            {/* Animation for Flashing */}
+            <style>
+                {`
+                    @keyframes flashFade {
+                        0% { opacity: 1; }
+                        100% { opacity: 0; }
+                    }
+                `}
+            </style>
         </div>
     );
 };
