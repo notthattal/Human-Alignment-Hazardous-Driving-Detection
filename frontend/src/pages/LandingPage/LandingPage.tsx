@@ -1,5 +1,4 @@
 import { Button, Carousel, Container } from "react-bootstrap";
-import useSignOut from "../../hooks/useSignOut";
 import { useNavigate } from "react-router-dom";
 import calibrationTutorial from '../../assets/CalibrationTutorialHAHD.mp4';
 import simulationVideo from '../../assets/SimulationTutorial.mp4';
@@ -8,7 +7,6 @@ import { useState } from "react";
 import Profile from "../../components/Profile/Profile";
 
 const LandingPage: React.FC = () => {
-    const { signOut } = useSignOut();
     const navigate = useNavigate();
     const [index, setIndex] = useState<number>(0);
 
