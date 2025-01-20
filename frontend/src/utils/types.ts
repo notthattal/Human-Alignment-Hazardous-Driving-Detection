@@ -9,7 +9,6 @@ export type RegistrationFormData = {
     carMakeModel: string,
     gender: string,
     speedingTicket: boolean,
-    dui: boolean,
     visuallyImpaired: boolean
 }
 

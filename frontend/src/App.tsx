@@ -8,7 +8,6 @@ import Calibration from './pages/Calibration/Calibration';
 import Survey from './pages/Survey/Survey';
 import { useWebGazer } from './hooks/useWebGazer';
 import { useEffect } from 'react';
-import Questions from './pages/Questions/Questions';
 
 const App: React.FC = () => {
 
@@ -26,7 +25,6 @@ const App: React.FC = () => {
     <Routes>
       <Route path='/' element={ user ? <Navigate to='/landingpage' /> : <SignInPage />} />
       <Route path='/registration' element={<RegistrationPage />} />
-      <Route path='/questions' element={<Questions />} />
       <Route path='/landingpage' 
                 element={
                     !user ? <Navigate to='/' /> :

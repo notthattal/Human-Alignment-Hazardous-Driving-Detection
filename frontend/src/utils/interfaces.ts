@@ -19,9 +19,11 @@ export interface WebGazerContextType {
     isCalibrated: boolean;
     isInitialized: boolean;
     gazeData: GazeData[];
+    finalGazeData: GazeData[];
     startWebGazer: () => Promise<void>;
     stopWebGazer: () => void;
     setIsCalibrated: (value: boolean) => void;
+    resetFinalGazeData: () => void;
 }
 
 export interface VideoData {
@@ -31,17 +33,28 @@ export interface VideoData {
 
 export interface VideoPlayerProps {
     onVideoComplete?: () => void;
+    passVideoId: (id: string) => void;
+    passSpacebarTimestamps: (timestamp: number[]) => void;
 }
 
 export interface QuestionsProps {
+    videoId: string,
+    spacebarTimestamps: number[];
     onFormSumbitted?: () => void;
 }
 
 export interface QuestionsFormData {
     hazardDetected: string;         
-    noDetectionReason: string;      // Categorical: 'noHazards', 'uncertain', 'subtleHazards'
-    detectionConfidence: number;    // Scale 1-5 confidence rating
-    hazardSeverity: number;         // Scale 1-5 severity rating
-    hazardDescription: string;      // Text feature for NLP analysis
-    attentionFactors: string[];     // Multi-label categorical: ['motion', 'velocity', 'proximity', 'environment', 'anomaly', 'other']
+    noDetectionReason: string;      
+    detectionConfidence: number;    
+    hazardSeverity: number;         
+    attentionFactors: string[];
+    spacebarTimestamps: number[];
+}
+
+export interface SurveyResults {
+    userId: number,
+    videoId: string,
+    gaze: GazeData[],
+    formData: QuestionsFormData
 }
