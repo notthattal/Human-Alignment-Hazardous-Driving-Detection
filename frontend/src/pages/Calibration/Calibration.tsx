@@ -1,9 +1,10 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useWebGazer } from "../../hooks/useWebGazer";
 import styles from './Calibration.module.css';
 
 const Calibration: React.FC = () => {
     const { startWebGazer, setIsCalibrated, stopWebGazer } = useWebGazer();
+    
     const coordinates = [
         { x: 100, y: 100 }, 
         { x: window.innerWidth / 2, y: 100 }, 
@@ -23,13 +24,14 @@ const Calibration: React.FC = () => {
         clicks: 0,
     });
 
-    const setNextCoordinate = useCallback(() => {
+    const setNextCoordinate = () => {
         setCalibrationState((prev) => {
             const nextClicks = prev.clicks + 1;
             const isLastPoint = prev.coordinate === coordinates.length - 1;
 
             if (isLastPoint && nextClicks === 5) {
                 setIsCalibrated(true);
+                
                 return prev;
             }
 
@@ -45,10 +47,11 @@ const Calibration: React.FC = () => {
 
             return { ...prev, clicks: nextClicks };
         });
-    }, [coordinates, setIsCalibrated]);
+    };
 
     useEffect(() => {
         startWebGazer();
+
         return () => stopWebGazer();
     }, []);
 

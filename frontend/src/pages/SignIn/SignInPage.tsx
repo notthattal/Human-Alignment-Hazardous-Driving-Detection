@@ -83,7 +83,6 @@ const SignInPage: React.FC = () => {
                             Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
                         </p>
                     </div>
-
                     <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px' }}>
                         <Form.Group className="mb-3" controlId="formGridEmail">
                             <Form.Label>Email</Form.Label>
