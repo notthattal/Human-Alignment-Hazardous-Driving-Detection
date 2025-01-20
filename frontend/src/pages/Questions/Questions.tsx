@@ -4,10 +4,9 @@ import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
-import useSignOut from "../../hooks/useSignOut";
+import Profile from "../../components/Profile/Profile";
 
 const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
-    const { signOut } = useSignOut();
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
 
@@ -31,6 +30,10 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
         if (userItem) {
             const user = JSON.parse(userItem)
             const userId = user.email
+
+            // Update Survey Completion Count in Local Storage
+            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1}
+            localStorage.setItem('user', JSON.stringify(updatedUser))
 
             const results = {
                 userId: userId,
@@ -78,19 +81,9 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
         }));
     };
 
-    const handleEndSurvey = () => {
-        signOut();
-    }
-
     return (
         <div className={styles.container}>
-            <Button
-                variant="danger"
-                className="position-absolute top-0 end-0 m-2"
-                onClick={handleEndSurvey}
-            >
-                End Survey
-            </Button>
+            <Profile />
             <div className={styles.containerWrapper}>
                 <div className={styles.title}>
                     Post-Simulation Survey

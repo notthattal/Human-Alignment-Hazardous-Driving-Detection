@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { WebGazerContextType } from "../utils/interfaces";
-import { WebGazerContext } from "../components/webgazer/WebGazerContext";
+import { WebGazerContext } from "../components/WebGazer/WebGazerContext";
 
 export const useWebGazer = (): WebGazerContextType => {
     const context = useContext(WebGazerContext);

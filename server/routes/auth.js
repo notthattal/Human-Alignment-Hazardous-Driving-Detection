@@ -4,25 +4,30 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.post('/register', async (req, res) => {
-    const { email, password, ...formData } = req.body;
+    const { email, password, referredByUser, ...formData } = req.body;
+
     try {
-        const user = await User.register(email, password, formData)
+        const { user, surveysCompleted, referralCode } = await User.register(email, password, referredByUser, formData)
         const token = createToken(user._id)
 
-        res.status(200).json({ email, token })
+        res.status(200).json({ email, surveysCompleted, referralCode, token })
     } catch (err) {
-        res.status(400).json({ err: err.message })
+        console.error(err);
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ message: err.message });
+        } else {
+            res.status(500).json({ message: 'An unexpected error occurred' });
+        }
     }
 });
 
 router.post('/signIn', async (req, res) => {
     const { email, password } = req.body;
-    console.log(email, password)
     try {
-        const user = await User.signIn(email, password)
+        const { user, surveysCompleted, referralCode } = await User.signIn(email, password)
         const token = createToken(user._id)
 
-        res.status(200).json({ email, token })
+        res.status(200).json({ email, surveysCompleted, referralCode, token })
     } catch (err) {
         res.status(400).json({ err: err.message })
     }

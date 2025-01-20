@@ -5,6 +5,7 @@ import calibrationTutorial from '../../assets/CalibrationTutorialHAHD.mp4';
 import simulationVideo from '../../assets/SimulationTutorial.mp4';
 import questionnaireTutorial from '../../assets/QuestionnaireTutorial.mp4';
 import { useState } from "react";
+import Profile from "../../components/Profile/Profile";
 
 const LandingPage: React.FC = () => {
     const { signOut } = useSignOut();
@@ -28,7 +29,7 @@ const LandingPage: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '7rem 0',
+        padding: '2rem 0',
     };
 
     return (
@@ -36,12 +37,7 @@ const LandingPage: React.FC = () => {
             fluid
             className="min-vh-100 position-relative align-items-center justify-content-center"
         >
-            <Button
-                variant="dark"
-                className="position-absolute top-0 end-0 m-2"
-                onClick={signOut}>
-                Sign Out
-            </Button>
+            <Profile />
             <div style={{ position: 'absolute', top: '5%', left: '8%' }}>
                 <p className="fw-bold fst-italic" style={{
                     fontSize: 'clamp(2rem, 2vw, 1.6rem)'

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import VideoPlayer from "../../components/video/VideoPlayer";
+import VideoPlayer from "../../components/Video/VideoPlayer";
 import Questions from "../Questions/Questions";
 
 const Survey: React.FC = () => {

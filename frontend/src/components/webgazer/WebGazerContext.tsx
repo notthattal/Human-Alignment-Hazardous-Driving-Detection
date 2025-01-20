@@ -59,9 +59,9 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
 
   const stopWebGazer = () => {
     if (webgazerInstance.current) {
-
-      setFinalGazeData(gazeData);
+      console.log('WebGazer shutting down...');
       
+      setFinalGazeData(gazeData);
       window.webgazer.end();
       setIsInitialized(false);
       setGazeData([]);
