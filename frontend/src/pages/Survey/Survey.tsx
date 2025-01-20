@@ -77,7 +77,6 @@ const Survey: React.FC = () => {
             centered
             backdrop="static"
             keyboard={false}
-            size="md"
         >
             <Modal.Body className="text-center py-4">
                 <h4 style={{ marginBottom: '1.5rem' }}>Are you ready for the next driving scenario?</h4>
