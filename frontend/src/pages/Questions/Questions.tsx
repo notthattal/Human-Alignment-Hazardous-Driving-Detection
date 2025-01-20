@@ -194,7 +194,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                                     {[
                                         { label: 'Movement', value: 'motion' },
                                         { label: 'Speed', value: 'velocity' },
-                                        { label: 'Proximity to the vehicle', value: 'proximity' },
+                                        { label: 'Proximity to another vehicle', value: 'proximity' },
                                         { label: 'Environmental conditions', value: 'environment' },
                                         { label: 'Unusual behavior', value: 'anomaly' },
                                         { label: 'Other', value: 'other' }
