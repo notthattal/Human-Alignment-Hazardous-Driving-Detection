@@ -124,7 +124,9 @@ const SignInPage: React.FC = () => {
                 </Col>
 
                 {/* Second Column */}
-                <Col md={6} className="bg-dark" />
+                <Col md={6} className="bg-dark text-white d-flex justify-content-center align-items-center">
+                    <h1 className="text-center">A chance to win $100 for every video submitted!</h1>
+                </Col>
             </Row>
         </Container>
     );
