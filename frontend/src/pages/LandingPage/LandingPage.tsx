@@ -1,14 +1,14 @@
 import { Button, Carousel, Container } from "react-bootstrap";
-import useSignOut from "../../hooks/useSignOut";
 import { useNavigate } from "react-router-dom";
 import calibrationTutorial from '../../assets/CalibrationTutorialHAHD.mp4';
 import simulationVideo from '../../assets/SimulationTutorial.mp4';
 import questionnaireTutorial from '../../assets/QuestionnaireTutorial.mp4';
 import { useState } from "react";
+import Profile from "../../components/Profile/Profile";
 import styles from './LandingPage.module.css';
 
+
 const LandingPage: React.FC = () => {
-    const { signOut } = useSignOut();
     const navigate = useNavigate();
     const [index, setIndex] = useState<number>(0);
 
@@ -25,13 +25,7 @@ const LandingPage: React.FC = () => {
 
     return (
         <Container fluid className={styles.container}>
-            <Button
-                variant="dark"
-                className={styles.signOutButton}
-                onClick={signOut}
-            >
-                Sign Out
-            </Button>
+          <Profile />
 
             <h1 className={styles.title}>
                 Survey Instructions
@@ -55,7 +49,7 @@ const LandingPage: React.FC = () => {
                                     <h2 className={styles.stepTitle}>Eye-Tracker Calibration</h2>
                                 </div>
                                 <p className={styles.description}>
-                                Before starting, you'll need to calibrate the eye tracker. Grant camera access, sit up straight, and ensure proper lighting. You'll click on nine dots multiple times on the screen before beginning the survey.
+                                Before starting, you'll need to calibrate the eye tracker. Please ensure you are not wearing sunglasses. <b>Grant camera access, sit up straight, and ensure proper lighting</b>. You'll click on nine dots multiple times on the screen before beginning the survey.
                                 </p>
                                 <video
                                     src={calibrationTutorial}
@@ -77,7 +71,7 @@ const LandingPage: React.FC = () => {
                                     <h2 className={styles.stepTitle}>Observe Driving Footage</h2>
                                 </div>
                                 <p className={styles.description}>
-                                After calibrating the eye tracker, you'll watch a driving footage video. Observe naturally, as if you're behind the wheel, while your eye movements are tracked. Stay seated and press the spacebar whenever you spot a potential hazard.
+                                After calibrating the eye tracker, you will watch a driving video. Stay seated and <b>press the spacebar</b> to start recording a potential hazard, then <b>press it again</b> when the hazard is no longer present.
                                 </p>
                                 <div className={styles.videoContainer}>
                                     <video
@@ -124,7 +118,7 @@ const LandingPage: React.FC = () => {
                                                 </filter>
                                             </defs>
                                             <text x="200" y="180" text-anchor="middle" fill="#1E90FF" font-size="20" font-family="Arial, sans-serif" font-weight="bold">
-                                                Press when you spot a hazard
+                                                Press Space when you spot a hazard
                                             </text>
                                         </svg>
                                     </div>
@@ -141,9 +135,7 @@ const LandingPage: React.FC = () => {
                                     <h2 className={styles.stepTitle}>Post-Simulation Survey</h2>
                                 </div>
                                 <p className={styles.description}>
-                                    After reviewing the driving footage, you will answer questions related to the content. These questions 
-                                    assess your ability to identify key events and driving behaviors, helping train the model to align 
-                                    with human judgment and decision-making in driving scenarios.
+                                    After reviewing the driving footage, you will answer <b>a couple questions</b> about the video you just watched.
                                 </p>
                                 <video
                                     src={questionnaireTutorial}
@@ -162,7 +154,7 @@ const LandingPage: React.FC = () => {
                             <div className={`${styles.content} ${styles.finalSlide}`}>
                                 <div>
                                     <p className={styles.description}>
-                                    Participate in as many driving simulations as possible! Each completed simulation earns you one raffle entry, and every successful referral grants you 10 entries. The grand prize winner will receive $100!
+                                    Participate in as many driving simulations as possible! Each completed simulation earns you one raffle entry, and every successful <b>referral grants you 10 entries.</b> The grand prize winner will receive <b>$100!</b>
                                     </p>
                                     <p className={styles.description}>
                                         Thank you for participating in this survey. Your contributions are valuable to our research!
