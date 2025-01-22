@@ -3,25 +3,127 @@
     font-family: 'Roboto', sans-serif;
     text-align: center;
     font-weight: 700;
-}
-
-.content {
+  }
+  
+  .content {
     font-family: 'Roboto', sans-serif;
     text-align: center;
-}
-
-.confirmPasswordWarning {
+  }
+  
+  .confirmPasswordWarning {
     font-family: 'Roboto', sans-serif;
     color: red;
     font-size: 12px;
     margin-left: 3px;
     margin-top: 5px;
-}
-
-.containerWrapper {
+  }
+  
+  .containerWrapper {
     max-width: 100vw;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 50px;
-}
+  }
+  
+  .celebrationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 2rem;
+    height: 100%;
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .celebrationSvg {
+    width: 200px;
+    height: 200px;
+    animation: popAndFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+  }
+  
+  .celebrationText {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    z-index: 1;
+  }
+  
+  .celebrationHeading {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  
+  .celebrationSubtext {
+    font-size: 1.8rem;
+    color: #fff;
+    opacity: 0.9;
+    line-height: 1.4;
+  }
+  
+  .highlightText {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  
+  .additionalText {
+    font-size: 1.2rem;
+    color: #fff;
+    opacity: 0.9;
+    margin-top: 10px;
+  }
+  
+  .additionalHighlight {
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  
+  @keyframes popAndFloat {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  
+  /* Terms of Service Modal Styling */
+  .terms-content {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .terms-content section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .terms-content h3 {
+    color: #1a1a1a;
+    margin-bottom: 15px;
+  }
+  
+  .terms-content .border-bottom {
+    border-color: #e0e0e0 !important;
+  }
+  
+  .terms-content p {
+    margin-bottom: 10px;
+  }
+  
+  .modal-header {
+    border-bottom: 2px solid #2d2d2d;
+  }
+  
+  .modal-body {
+    padding: 24px;
+  }
