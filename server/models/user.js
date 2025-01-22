@@ -4,11 +4,12 @@ const Result = require('../models/survey')
 const { generateReferralCode } = require('../utils/referral')
 
 const formSchema = new mongoose.Schema({
-    state: { type: String, required: true },
-    city: { type: String, required: true },
+    country: { type: String, required: true },
+    state: { type: String, required: true, minlength: 0 },
+    city: { type: String, required: true, minlength: 0 },
     licenseAge: { type: String, required: true },
     age: { type: Number, required: true, min: 0 },
-    ethnicity: { type: String, required: false },
+    ethnicity: { type: String, required: true },
     gender: { type: String, required: true },
     visuallyImpaired: { type: Boolean, default: false }
 });
