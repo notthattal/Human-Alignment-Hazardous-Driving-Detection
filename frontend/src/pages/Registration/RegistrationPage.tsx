@@ -23,9 +23,7 @@ const RegistrationPage: React.FC = () => {
         licenseAge: '',
         age: 0,
         ethnicity: '',
-        carMakeModel: '',
         gender: '',
-        speedingTicket: false,
         visuallyImpaired: false
     });
 
@@ -293,18 +291,6 @@ const RegistrationPage: React.FC = () => {
                                 />
                             </Form.Group>
 
-                            {/* Make/Model of Car */}
-                            <Form.Group className="mb-4" controlId="formCarMakeModel">
-                                <Form.Label>What is the make/model of your car?</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter make/model"
-                                    name="carMakeModel"
-                                    value={formData.carMakeModel}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
                             {/* Visually Impaired */}
                             <Form.Group className="mb-4" controlId="formVisuallyImpaired">
                                 <Form.Label>Are you visually impaired?</Form.Label>
@@ -334,41 +320,6 @@ const RegistrationPage: React.FC = () => {
                                             setFormData(prevState => ({
                                                 ...prevState,
                                                 visuallyImpaired: value
-                                            }));
-                                        }}
-                                    />
-                                </div>
-                            </Form.Group>
-
-                            {/* Speeding Ticket */}
-                            <Form.Group className="mb-4" controlId="formSpeedingTicket">
-                                <Form.Label>Have you ever obtained a speeding ticket?</Form.Label>
-                                <div>
-                                    <Form.Check
-                                        type="radio"
-                                        label="Yes"
-                                        name="speedingTicket"
-                                        value="true"
-                                        checked={formData.speedingTicket === true}
-                                        onChange={(e) => {
-                                            const value = e.target.value === "true";
-                                            setFormData(prevState => ({
-                                                ...prevState,
-                                                speedingTicket: value
-                                            }));
-                                        }}
-                                    />
-                                    <Form.Check
-                                        type="radio"
-                                        label="No"
-                                        name="speedingTicket"
-                                        value="false"
-                                        checked={formData.speedingTicket === false}
-                                        onChange={(e) => {
-                                            const value = e.target.value === "true";
-                                            setFormData(prevState => ({
-                                                ...prevState,
-                                                speedingTicket: value
                                             }));
                                         }}
                                     />

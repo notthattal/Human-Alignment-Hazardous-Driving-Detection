@@ -9,9 +9,7 @@ const formSchema = new mongoose.Schema({
     licenseAge: { type: String, required: true },
     age: { type: Number, required: true, min: 0 },
     ethnicity: { type: String, required: false },
-    carMakeModel: { type: String, required: true },
     gender: { type: String, required: true },
-    speedingTicket: { type: Boolean, default: false },
     visuallyImpaired: { type: Boolean, default: false }
 });
 
@@ -19,7 +17,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true },
     referralCode: { type: String, required: true, unique: true },
-    referredByUser: { type: String, required: true},
+    referredByUser: { type: String },
     form: { type: formSchema, required: true }
 });
 
