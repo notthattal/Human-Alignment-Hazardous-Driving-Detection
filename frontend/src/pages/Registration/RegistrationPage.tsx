@@ -23,7 +23,6 @@ const RegistrationPage: React.FC = () => {
         licenseAge: '',
         age: 0,
         ethnicity: '',
-        carMakeModel: '',
         gender: '',
         speedingTicket: false,
         visuallyImpaired: false
@@ -290,18 +289,6 @@ const RegistrationPage: React.FC = () => {
                                     value={formData.licenseAge}
                                     onChange={handleChange}
                                     required
-                                />
-                            </Form.Group>
-
-                            {/* Make/Model of Car */}
-                            <Form.Group className="mb-4" controlId="formCarMakeModel">
-                                <Form.Label>What is the make/model of your car?</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter make/model"
-                                    name="carMakeModel"
-                                    value={formData.carMakeModel}
-                                    onChange={handleChange}
                                 />
                             </Form.Group>
 
