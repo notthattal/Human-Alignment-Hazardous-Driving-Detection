@@ -118,7 +118,7 @@ const LandingPage: React.FC = () => {
                                                 </filter>
                                             </defs>
                                             <text x="200" y="180" text-anchor="middle" fill="#1E90FF" font-size="20" font-family="Arial, sans-serif" font-weight="bold">
-                                                Press Space when you spot a hazard
+                                                Press the Space Bar when you spot a hazard
                                             </text>
                                         </svg>
                                     </div>
