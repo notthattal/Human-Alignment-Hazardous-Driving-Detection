@@ -7,7 +7,6 @@ export type RegistrationFormData = {
     age: number,
     ethnicity: string,
     gender: string,
-    speedingTicket: boolean,
     visuallyImpaired: boolean,
     referredByUser: string
 }
