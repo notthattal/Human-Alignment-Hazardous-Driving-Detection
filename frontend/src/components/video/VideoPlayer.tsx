@@ -75,7 +75,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId,
         if (event.code === "Space" && videoRef.current) {
             setFlashActive(true);
             setTimeout(() => setFlashActive(false), 100);
+            
             const currentTime = videoRef.current.currentTime;
+
             setSpacebarTimestamps((prev) => [...prev, currentTime]);
             console.log(`Spacebar pressed at: ${currentTime.toFixed(2)} seconds`);
         }

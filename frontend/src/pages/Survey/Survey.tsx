@@ -62,10 +62,10 @@ const Survey: React.FC = () => {
             </g>
             <defs>
                 <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+                    <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.3"/>
                 </filter>
             </defs>
-            <text x="200" y="190" text-anchor="middle" fill="#1E90FF" font-size="20" font-family="Arial, sans-serif" font-weight="bold">
+            <text x="200" y="190" textAnchor="middle" fill="#1E90FF" fontSize="20" fontFamily="Arial, sans-serif" fontWeight="bold">
                 Press when you spot a hazard
             </text>
         </svg>
@@ -117,8 +117,8 @@ const Survey: React.FC = () => {
         return (
             <>
                 <Questions 
-                    onFormSumbitted={handleFormSubmitted} 
-                    videoId={videoId} 
+                    onFormSumbitted={handleFormSubmitted}
+                    videoId={videoId}
                     spacebarTimestamps={spacebarTimestamps}
                 />
                 <ConfirmationDialog />
