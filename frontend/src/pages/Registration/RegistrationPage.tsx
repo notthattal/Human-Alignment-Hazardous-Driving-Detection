@@ -293,7 +293,7 @@ const RegistrationPage: React.FC = () => {
 
                             {/* Visually Impaired */}
                             <Form.Group className="mb-4" controlId="formVisuallyImpaired">
-                                <Form.Label>Are you visually impaired?</Form.Label>
+                                <Form.Label>Are you visually impaired or do you wear glasses?</Form.Label>
                                 <div>
                                     <Form.Check
                                         type="radio"
