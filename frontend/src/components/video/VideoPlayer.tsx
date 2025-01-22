@@ -10,11 +10,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId,
     const [loading, setLoading] = useState<boolean>(true);
     const [flashActive, setFlashActive] = useState<boolean>(false);
     const [spacebarTimestamps, setSpacebarTimestamps] = useState<number[]>([]);
+    const [timestampsLength, setTimestampsLength] = useState<number>(0);
 
     const handleVideoFinished = useCallback(() => {
         if (isInitialized) {
             stopWebGazer();
         }
+
+        // Append Final Spacebar Timestamp if Recoding Hazard was in Progress.
+        if (timestampsLength % 2 != 0) {
+            spacebarTimestamps.push(Date.now());
+        }
+
         passSpacebarTimestamps(spacebarTimestamps);
         onVideoComplete?.();
     }, [isInitialized, stopWebGazer, onVideoComplete]);
@@ -71,17 +78,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId,
         }
     };
 
-    const handleKeyPress = useCallback((event: KeyboardEvent) => {
-        if (event.code === "Space" && videoRef.current) {
-            setFlashActive(true);
-            setTimeout(() => setFlashActive(false), 100);
-            
-            const currentTime = videoRef.current.currentTime;
+    const handleKeyPress = (event: KeyboardEvent) => {
+        setTimestampsLength(timestampsLength + 1);
+        const currentTime = Date.now();
 
-            setSpacebarTimestamps((prev) => [...prev, currentTime]);
-            console.log(`Spacebar pressed at: ${currentTime.toFixed(2)} seconds`);
-        }
-    }, []);
+        if (event.code === "Space" && videoRef.current) {
+            if (timestampsLength % 2 == 0) {
+                setFlashActive(true);
+                setSpacebarTimestamps((prev) => [...prev, currentTime]);
+            } else {
+                setFlashActive(false);
+                setSpacebarTimestamps((prev) => [...prev, currentTime]);
+            }
+        };
+    };
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
@@ -114,46 +124,58 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId,
     }
 
     return (
-        <div className="video-container">
+        <div className="video-container" style={{ overflow: 'hidden' }}>
             {videoUrl && (
-                <video
-                    ref={videoRef}
-                    width="100%"
-                    muted
-                    autoPlay
-                    onEnded={handleVideoFinished}
-                    onTimeUpdate={handleTimeUpdate}
-                    onPlay={handleBeginWebGazer}
-                    style={{ maxWidth: '100vw', maxHeight: '100vh' }}
-                >
-                    <source src={videoUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
+                <div style={{ position: 'relative' }}>
+                    <video
+                        ref={videoRef}
+                        width="100%"
+                        muted
+                        autoPlay
+                        onEnded={handleVideoFinished}
+                        onTimeUpdate={handleTimeUpdate}
+                        onPlay={handleBeginWebGazer}
+                        style={{ maxWidth: '100vw', maxHeight: '100vh', display: 'block' }}
+                    >
+                        <source src={videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    {flashActive && (
+                        <>
+                            {/* Change Hazard Flash Style Here */}
+                            <div style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                border: '14px solid rgba(255, 0, 0, 0.8)',
+                                boxShadow: 'inset 0 0 20px rgba(255, 0, 0, 0.8)',
+                                pointerEvents: 'none',
+                                animation: 'pulse 1.2s ease-in-out infinite'
+                            }} />
+                            <style>
+                                {`
+                                    @keyframes pulse {
+                                        0% { 
+                                            border-color: rgba(255, 0, 0, 0.8);
+                                            box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.8);
+                                        }
+                                        50% { 
+                                            border-color: rgba(255, 0, 0, 0.3);
+                                            box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.3);
+                                        }
+                                        100% { 
+                                            border-color: rgba(255, 0, 0, 0.8);
+                                            box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.8);
+                                        }
+                                    }
+                                `}
+                            </style>
+                        </>
+                    )}
+                </div>
             )}
-            {flashActive && (
-                <div
-                    className="flash-overlay"
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "rgba(255, 255, 255, 0.75)",
-                        animation: "flashFade 0.3s ease-in-out",
-                        pointerEvents: "none",
-                    }}
-                />
-            )}
-            {/* Animation for Flashing */}
-            <style>
-                {`
-                    @keyframes flashFade {
-                        0% { opacity: 1; }
-                        100% { opacity: 0; }
-                    }
-                `}
-            </style>
         </div>
     );
 };

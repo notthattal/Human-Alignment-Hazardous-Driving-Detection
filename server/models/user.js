@@ -5,8 +5,8 @@ const { generateReferralCode } = require('../utils/referral')
 
 const formSchema = new mongoose.Schema({
     country: { type: String, required: true },
-    state: { type: String, required: true, minlength: 0 },
-    city: { type: String, required: true, minlength: 0 },
+    state: { type: String, required: false },
+    city: { type: String, required: false },
     licenseAge: { type: String, required: true },
     age: { type: Number, required: true, min: 0 },
     ethnicity: { type: String, required: true },
