@@ -4,22 +4,31 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
 import { RegistrationFormData } from '../../utils/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useRegister from '../../hooks/useRegister';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
+import axios from 'axios';
+
+interface Country {
+    code: string;
+    name: string;
+}
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const { registerUser } = useRegister();
     const [error, setError] = useState('');
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const [formData, setFormData] = useState<RegistrationFormData>({
         email: '',
         password: '',
         referredByUser: '',
-        state: '',
-        city: '',
+        country: '',
+        state: 'NaN',
+        city: 'NaN',
         licenseAge: '',
         age: 0,
         ethnicity: '',
@@ -102,7 +111,7 @@ const RegistrationPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const result = await registerUser(formData);
-        
+
         if (result.success) {
             navigate('/');
         } else {
@@ -131,6 +140,38 @@ const RegistrationPage: React.FC = () => {
         const password = e.target.value;
         setConfirmedPassword(password)
     };
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const response = await axios.get("https://restcountries.com/v3.1/all");
+                const countryList = response.data.map((country: any) => ({
+                    code: country.cca2,
+                    name: country.name.common,
+                }));
+
+                setCountries(countryList.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+                setLoading(false);
+            } catch (err) {
+                setError("Failed to fetch countries. Please try again.");
+                setLoading(false);
+            }
+        };
+
+        fetchCountries();
+    }, [])
+
+    if (loading) {
+        return (
+            <div style={{ minHeight: '100vh', minWidth: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Spinner
+                    animation="border"
+                    variant="dark"
+                    style={{ width: '5rem', height: '5rem' }}
+                />
+            </div>
+        );
+    }
 
     return (
         <Container fluid className="vh-100 px-4 py-4">
@@ -192,37 +233,58 @@ const RegistrationPage: React.FC = () => {
                                 </Form.Group>
                             </Row>
 
-                            <Row className="mb-4">
-                                <Form.Group as={Col} controlId="formGridCity">
-                                    <Form.Label>City</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter City"
-                                        name="city"
-                                        value={formData.city}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
+                            <Form.Group className='mb-4' controlId="formGridCountry" >
+                                <Form.Label>Country</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="country"
+                                    placeholder="name@example.com"
+                                    value={formData.country}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select...</option>
+                                    {countries.map((country) => (
+                                        <option key={country.code} value={country.code}>
+                                            {country.name}
+                                        </option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
 
-                                <Form.Group as={Col} controlId="formGridState">
-                                    <Form.Label>State</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="state"
-                                        value={formData.state}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select...</option>
-                                        {states.map((state, index) => (
-                                            <option key={index} value={state.name}>
-                                                {state.name}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-                            </Row>
+                            {formData.country === 'US' && (
+                                <Row className="mb-4">
+                                    <Form.Group as={Col} controlId="formGridCity">
+                                        <Form.Label>City</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter City"
+                                            name="city"
+                                            value={formData.city || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>State</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="state"
+                                            value={formData.state || ""}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="">Select...</option>
+                                            {states.map((state, index) => (
+                                                <option key={index} value={state.name}>
+                                                    {state.name}
+                                                </option>
+                                            ))}
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Row>
+                            )}
 
                             <Row className="mb-4">
                                 {/* Current Age */}
@@ -293,7 +355,7 @@ const RegistrationPage: React.FC = () => {
 
                             {/* Visually Impaired */}
                             <Form.Group className="mb-4" controlId="formVisuallyImpaired">
-                                <Form.Label>Are you visually impaired?</Form.Label>
+                                <Form.Label>Are you visually impaired or do you wear glasses?</Form.Label>
                                 <div>
                                     <Form.Check
                                         type="radio"
@@ -339,10 +401,10 @@ const RegistrationPage: React.FC = () => {
                             </Form.Group>
 
                             {error && (
-                            <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
-                                {error}
-                            </div>
-                        )}
+                                <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
+                                    {error}
+                                </div>
+                            )}
 
                             <div className={styles.buttonGroup}>
                                 <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
