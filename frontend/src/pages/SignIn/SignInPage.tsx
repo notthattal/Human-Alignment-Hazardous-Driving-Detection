@@ -17,7 +17,7 @@ const TermsOfService = () => {
             <div className="text-center mt-4">
                 <button
                     onClick={() => setIsOpen(true)}
-                    style={{ 
+                    style={{
                         color: '#fff',
                         background: 'none',
                         border: 'none',
@@ -88,7 +88,7 @@ const TermsOfService = () => {
                                 <p className="mb-2">• Winners are selected randomly on the first day of each month</p>
                                 <p className="mb-2">• Multiple entries increase chances of winning</p>
                                 <p className="mb-2">• Winners will be notified via their registered email address</p>
-                                
+
                                 <p className="mb-3 mt-4"><strong>Prize Details:</strong></p>
                                 <p className="mb-2">• Prize Amount: $100 USD</p>
                                 <p className="mb-2">• Distribution: ONYX AI LLC will process payment within 5 business days</p>
@@ -190,16 +190,18 @@ const SignInPage: React.FC = () => {
                 <Col
                     md={6}
                     className="d-flex flex-column justify-content-center align-items-center px-5">
-                    <div style={{ maxWidth: '650px' }}>
+                    <div className={styles.headerWrapper}>
                         <h1 className={`${styles.title} mb-4 text-center`}>
                             Welcome to the Human-Aligned Hazard Detection Survey.
                         </h1>
-                        <p className={`${styles.content} mb-4 text-center`}>
-                            Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
-                        </p>
+                        <div className={styles.contentWrapper}>
+                            <p className={`${styles.content} mb-4`}>
+                                Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
+                            </p>
+                        </div>
                     </div>
                     <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px' }}>
-                        <Form.Group className="mb-3" controlId="formGridEmail">
+                        <Form.Group className="mb-4" controlId="formGridEmail">
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 type="email"
@@ -211,7 +213,7 @@ const SignInPage: React.FC = () => {
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formGridPassword">
+                        <Form.Group className="mb-4" controlId="formGridPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type="password"
@@ -245,7 +247,7 @@ const SignInPage: React.FC = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                                 {/* Popper Base */}
                                 <path d="M60 140 L80 120 L90 130 L70 150Z" fill="#FFB02E" />
-                                
+
                                 {/* Streamers */}
                                 <g>
                                     <path d="M90 120 Q120 80 150 70" stroke="#FF3B30" fill="none" strokeWidth="4" />
@@ -262,7 +264,7 @@ const SignInPage: React.FC = () => {
                                     <rect x="100" y="50" width="8" height="8" fill="#FFCD00" transform="rotate(15 104 54)" />
                                     <rect x="130" y="70" width="8" height="8" fill="#34C759" transform="rotate(60 134 74)" />
                                     <rect x="150" y="80" width="8" height="8" fill="#AF52DE" transform="rotate(75 154 84)" />
-                                    
+
                                     <path d="M110 70 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FF3B30" />
                                     <path d="M145 65 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FFCD00" />
                                     <path d="M160 95 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#34C759" />

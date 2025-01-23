@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
                         <div className={styles.carouselItem}>
                             <div className={styles.content}>
                                 <div className={styles.stepHeader}>
-                                    <i className={`bi bi-1-square ${styles.stepNumber}`}></i>
+                                    <div className={styles.stepNumber}>1)</div>
                                     <h2 className={styles.stepTitle}>Eye-Tracker Calibration</h2>
                                 </div>
                                 <p className={styles.description}>
@@ -67,7 +67,7 @@ const LandingPage: React.FC = () => {
                         <div className={styles.carouselItem}>
                             <div className={styles.content}>
                                 <div className={styles.stepHeader}>
-                                    <i className={`bi bi-2-square ${styles.stepNumber}`}></i>
+                                <div className={styles.stepNumber}>2)</div>
                                     <h2 className={styles.stepTitle}>Observe Driving Footage</h2>
                                 </div>
                                 <p className={styles.description}>
@@ -131,7 +131,7 @@ const LandingPage: React.FC = () => {
                         <div className={styles.carouselItem}>
                             <div className={styles.content}>
                                 <div className={styles.stepHeader}>
-                                    <i className={`bi bi-3-square ${styles.stepNumber}`}></i>
+                                <div className={styles.stepNumber}>3)</div>
                                     <h2 className={styles.stepTitle}>Post-Simulation Survey</h2>
                                 </div>
                                 <p className={styles.description}>
