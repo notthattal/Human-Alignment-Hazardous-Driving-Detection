@@ -17,9 +17,15 @@ const formSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true },
+<<<<<<< Updated upstream
     referralCode: { type: String, required: true, unique: true },
     referredByUser: { type: String },
     form: { type: formSchema, required: true }
+=======
+    form: { type: formSchema, required: true },
+    numRaffleEntries: { type: Number, default: 0 },
+    numSurveysFilled: { type: Number, default: 0 },
+>>>>>>> Stashed changes
 });
 
 userSchema.statics.register = async function (email, password, referredByUser, formData) {
@@ -41,6 +47,7 @@ userSchema.statics.register = async function (email, password, referredByUser, f
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
+<<<<<<< Updated upstream
 
     const referralCode = await generateReferralCode();
 
@@ -50,6 +57,14 @@ userSchema.statics.register = async function (email, password, referredByUser, f
         referralCode,
         referredByUser,
         form: formData
+=======
+    const user = await this.create({ 
+        email, 
+        password: hash, 
+        form: formData ,
+        numRaffleEntries: 0,
+        numSurveysFilled: 0
+>>>>>>> Stashed changes
     });
 
     return { user, referralCode };

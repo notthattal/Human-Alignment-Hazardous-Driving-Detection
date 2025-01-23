@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const SurveyResult = require('../models/survey')
+const SurveyResult = require('../models/survey');
+const User = require('../models/user');
 
 router.post('/results', async (req, res) => {
 
@@ -23,7 +24,17 @@ router.post('/results', async (req, res) => {
             formData: formData
         })
 
-        res.status(201).json({ message: 'Survey result saved successfully'});
+        await User.findByIdAndUpdate(
+            userId, 
+            {
+              $inc: { numSurveysFilled: 1 },
+              $set: { numRaffleEntries: Math.floor((user.numSurveysFilled + 1) / 3) }
+            },
+            { new: true }
+        );
+        
+
+        res.status(201).json({ message: 'Survey result saved successfully; User data updated'});
     } catch (err) {
 
         console.log('An error has occurred while saving results', err)
