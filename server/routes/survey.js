@@ -3,6 +3,24 @@ const router = express.Router();
 const SurveyResult = require('../models/survey');
 const User = require('../models/user');
 
+router.get('/top-raffle-entries', async (req, res) => {
+    try {
+        const currentUserEmail = req.query.currentUserEmail;
+        const currentUser = await User.findOne({ email: currentUserEmail });
+
+        const topUsers = await User.find()
+            .sort({ numRaffleEntries: -1 })
+            .limit(4)
+            .select('email numRaffleEntries');
+        
+        // Find the current user's rank
+        const currentUserRank = await User.countDocuments({ numRaffleEntries: { $gt: currentUserEmail.numRaffleEntries } }) + 1;
+        res.json({ topUsers, currentUserRank, currentUser});
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching top users' });
+    }
+});
+
 router.post('/results', async (req, res) => {
 
     console.log("Survey Results:", req.body)
