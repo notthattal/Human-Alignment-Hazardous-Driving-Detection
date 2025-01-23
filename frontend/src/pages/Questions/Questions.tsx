@@ -1,14 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QuestionsFormData, QuestionsProps } from "../../utils/interfaces";
 import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
 import Profile from "../../components/Profile/Profile";
+import UserStats from "../../components/UserStats/UserStats";
 
 const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
+
+    const [userData, setUserData] = useState({
+        surveysCompleted: 0,
+        numRaffleEntries: 0
+    });
+
+    useEffect(() => {
+        const userItem = localStorage.getItem('user');
+        if (userItem) {
+            const user = JSON.parse(userItem);
+            setUserData({
+                surveysCompleted: user.surveysCompleted,
+                numRaffleEntries: user.numRaffleEntries
+            });
+        }
+    }, []);
+
 
     const [formData, setFormData] = useState<QuestionsFormData>({
         hazardDetected: '',
@@ -32,14 +50,21 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
             const userId = user.email
 
             // Update Survey Completion Count in Local Storage
-            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1}
+            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1, numRaffleEntries: user.numRaffleEntries + 1}
             localStorage.setItem('user', JSON.stringify(updatedUser))
+
+            // Update local state
+            setUserData({
+                surveysCompleted: updatedUser.surveysCompleted,
+                numRaffleEntries: updatedUser.numRaffleEntries
+            });
 
             const results = {
                 userId: userId,
                 videoId: videoId,
                 gaze: finalGazeData,
-                formData: formData
+                formData: formData,
+                numSurveysCompleted: updatedUser.surveysCompleted
             }
 
             try {
@@ -83,6 +108,10 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
 
     return (
         <div className={styles.container}>
+            <UserStats 
+                surveysCompleted={userData.surveysCompleted}
+                numRaffleEntries={userData.numRaffleEntries}
+            />
             <Profile />
             <div className={styles.containerWrapper}>
                 <div className={styles.title}>

@@ -112,8 +112,8 @@ const RegistrationPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         const result = await registerUser(formData);
-
         if (result.success) {
             navigate('/');
         } else {
