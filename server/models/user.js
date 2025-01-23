@@ -17,20 +17,17 @@ const formSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true },
-<<<<<<< Updated upstream
     referralCode: { type: String, required: true, unique: true },
     referredByUser: { type: String },
-    form: { type: formSchema, required: true }
-=======
-    form: { type: formSchema, required: true },
-    numRaffleEntries: { type: Number, default: 0 },
     numSurveysFilled: { type: Number, default: 0 },
->>>>>>> Stashed changes
+    numRaffleEntries: { type: Number, default: 0 },
+    form: { type: formSchema, required: true }
 });
 
 userSchema.statics.register = async function (email, password, referredByUser, formData) {
 
     const emailExists = await this.findOne({ email })
+    
  
     if (emailExists) {
         throw Error('Email already exists!')
@@ -42,12 +39,16 @@ userSchema.statics.register = async function (email, password, referredByUser, f
             const error = new Error('Invalid referral code');
             error.statusCode = 400;
             throw error;
+        } else {
+            console.log('Referrer exists!');
+            // Add 10 raffle entries to the referrer
+            referrerExists.numRaffleEntries += 10;
+            referrerExists.save();
         }
     }
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
-<<<<<<< Updated upstream
 
     const referralCode = await generateReferralCode();
 
@@ -56,15 +57,9 @@ userSchema.statics.register = async function (email, password, referredByUser, f
         password: hash, 
         referralCode,
         referredByUser,
-        form: formData
-=======
-    const user = await this.create({ 
-        email, 
-        password: hash, 
-        form: formData ,
-        numRaffleEntries: 0,
-        numSurveysFilled: 0
->>>>>>> Stashed changes
+        form: formData,
+        numSurveysFilled: 0,
+        numRaffleEntries: 5
     });
 
     return { user, referralCode };
@@ -82,10 +77,8 @@ userSchema.statics.signIn = async function (email, password) {
     if (!match) {
         throw Error('Incorrect password.');
     }
-
-    const surveysCompleted = await Result.countDocuments({ userId: user.email });
     
-    return { user, surveysCompleted, referralCode: user.referralCode };
+    return { user, surveysCompleted: user.numSurveysFilled, referralCode: user.referralCode, numRaffleEntries: user.numRaffleEntries };
 }
 
 userSchema.statics.validateReferral = async function (code) {
