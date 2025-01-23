@@ -179,6 +179,20 @@ const RegistrationPage: React.FC = () => {
         fetchCountries();
     }, [])
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const referralParam = urlParams.get('referral');
+        
+        if (referralParam && referralParam.length === REFERRAL_CODE_LENGTH) {
+            setFormData(prev => ({
+                ...prev,
+                referredByUser: referralParam
+            }));
+            
+            handleValidateReferral({ code: referralParam });
+        }
+    }, []);
+
     if (loading) {
         return (
             <div style={{ minHeight: '100vh', minWidth: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

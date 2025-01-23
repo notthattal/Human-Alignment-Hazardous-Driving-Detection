@@ -26,17 +26,21 @@ const Profile: React.FC = () => {
     }, []);
 
     const [isCopied, setIsCopied] = useState(false);
-    
-    const handleCopy = async () => {
-        try { 
-            await navigator.clipboard.writeText(referralCode);
+
+    const shareReferralLink = () => {
+        const baseUrl = window.location.origin;
+        const referralLink = `${baseUrl}/registration?referral=${referralCode}`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Join the Human-Aligned Hazardous Detection Survey',
+                text: 'Use my referral code to register!',
+                url: referralLink
+            });
+        } else {
+            navigator.clipboard.writeText(referralLink);
             setIsCopied(true);
-            
-            setTimeout(() => {
-                setIsCopied(false);
-            }, 8000);
-        } catch (err) {
-            console.error('Failed to copy:', err);
+            setTimeout(() => setIsCopied(false), 2000);
         }
     };
 
@@ -86,7 +90,7 @@ const Profile: React.FC = () => {
                                 <div className={styles.dropdownItem}>{numberOfSurveysCompleted}</div>
                             </div>
                         </div>
-                        <div className={styles.dropdownItemWrapper} onClick={handleCopy}>
+                        <div className={styles.dropdownItemWrapper} onClick={shareReferralLink}>
                             <div className={styles.dropdownRow}>
                                 <div className="icon-wrapper">
                                     <div className='' style={{ fontSize: '14px', color: '#000000' }}>Referral Code</div>
