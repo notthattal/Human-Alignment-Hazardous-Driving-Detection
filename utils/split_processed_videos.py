@@ -2,10 +2,10 @@ import os
 import subprocess
 
 # Input folder containing the combined videos
-input_folder = "/Users/lennoxanderson/Documents/Research/ProcessedDrivingData"
+input_folder = "/Users/lennoxanderson/Documents/machineLearning/data/TeslaRawDrivingFootage/SecondBatch"
 
 # Output folder for split videos
-output_folder = "/Users/lennoxanderson/Documents/Research/SplitDrivingData"
+output_folder = "/Users/lennoxanderson/Documents/machineLearning/data/TeslaRawDrivingFootage/SecondBatchSplit"
 os.makedirs(output_folder, exist_ok=True)
 
 # Camera type to process
