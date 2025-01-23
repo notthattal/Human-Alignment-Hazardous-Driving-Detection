@@ -9,7 +9,7 @@ router.post('/results', async (req, res) => {
 
     try {
         const body = req.body;
-        const { userId, videoId, gaze, formData } = body;
+        const { userId, videoId, gaze, formData, numSurveysCompleted } = body;
 
         const cleanedGazeData = gaze.map(entry => ({
             time: entry.timestamp,
@@ -23,12 +23,12 @@ router.post('/results', async (req, res) => {
             gaze: cleanedGazeData,
             formData: formData
         })
-
-        await User.findByIdAndUpdate(
-            userId, 
+        
+        await User.findOneAndUpdate(
+            {email: userId}, 
             {
-              $inc: { numSurveysFilled: 1 },
-              $set: { numRaffleEntries: Math.floor((user.numSurveysFilled + 1) / 3) }
+              $set: { numSurveysFilled: numSurveysCompleted },
+              $inc: { numRaffleEntries: 1}
             },
             { new: true }
         );
