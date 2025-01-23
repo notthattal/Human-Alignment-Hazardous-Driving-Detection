@@ -58,3 +58,12 @@ export interface SurveyResults {
     gaze: GazeData[],
     formData: QuestionsFormData
 }
+
+export interface Country {
+    code: string;
+    name: string;
+}
+
+export interface ReferralCode {
+    code: string
+}

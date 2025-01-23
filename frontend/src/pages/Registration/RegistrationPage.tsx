@@ -4,23 +4,25 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
 import { RegistrationFormData } from '../../utils/types';
+import { Country, ReferralCode } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useRegister from '../../hooks/useRegister';
+import useValidateReferral from '../../hooks/useValidateReferral';
 import { Container, Spinner } from 'react-bootstrap';
 import axios from 'axios';
-
-interface Country {
-    code: string;
-    name: string;
-}
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const { registerUser } = useRegister();
+    const { validateReferral } = useValidateReferral();
+
     const [error, setError] = useState('');
     const [countries, setCountries] = useState<Country[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isValidReferral, setIsValidReferral] = useState<boolean>();
+
+    const REFERRAL_CODE_LENGTH = 36;
 
     const [formData, setFormData] = useState<RegistrationFormData>({
         email: '',
@@ -110,8 +112,8 @@ const RegistrationPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         const result = await registerUser(formData);
-
         if (result.success) {
             navigate('/');
         } else {
@@ -134,7 +136,23 @@ const RegistrationPage: React.FC = () => {
             ...prevState,
             [name]: updatedValue,
         }));
+
+        if (name === 'referredByUser' && value.length == REFERRAL_CODE_LENGTH) {
+            const referralCode: ReferralCode = { code: value }
+            handleValidateReferral(referralCode);
+        } else if (name === 'referredByUser' && value.length >= 1 ) {
+            setIsValidReferral(false);
+        }
     };
+
+    const handleValidateReferral = async (referralCode: ReferralCode) => {
+        const response = await validateReferral(referralCode)
+        if (response.isValid) {
+            setIsValidReferral(true);
+        } else {
+            setIsValidReferral(false);
+        }
+    }
 
     const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const password = e.target.value;
@@ -160,6 +178,20 @@ const RegistrationPage: React.FC = () => {
 
         fetchCountries();
     }, [])
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const referralParam = urlParams.get('referral');
+        
+        if (referralParam && referralParam.length === REFERRAL_CODE_LENGTH) {
+            setFormData(prev => ({
+                ...prev,
+                referredByUser: referralParam
+            }));
+            
+            handleValidateReferral({ code: referralParam });
+        }
+    }, []);
 
     if (loading) {
         return (
@@ -295,7 +327,7 @@ const RegistrationPage: React.FC = () => {
                                         placeholder="Enter age"
                                         name="age"
                                         min="0"
-                                        max="150"
+                                        max="100"
                                         required
                                         value={formData.age || ''}
                                         onChange={(e) => {
@@ -389,22 +421,19 @@ const RegistrationPage: React.FC = () => {
                             </Form.Group>
 
                             {/* Enter Referral Code */}
-                            <Form.Group className='mb-4' controlId="formGridReferredByUser" >
+                            <Form.Group className='mb-4 position-relative' controlId="formGridReferredByUser">
                                 <Form.Label>Referral Code (Optional)</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="xxxxx-xxxxx-xxxxx-xxxxx"
-                                    name="referredByUser"
-                                    value={formData.referredByUser}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
-                            {error && (
-                                <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
-                                    {error}
+                                <div className="d-flex align-items-center">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="xxxxx-xxxxx-xxxxx-xxxxx"
+                                        name="referredByUser"
+                                        value={formData.referredByUser}
+                                        onChange={handleChange}
+                                        className={formData.referredByUser ? (isValidReferral ? 'is-valid' : 'is-invalid') : ''}
+                                    />
                                 </div>
-                            )}
+                            </Form.Group>
 
                             <div className={styles.buttonGroup}>
                                 <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
