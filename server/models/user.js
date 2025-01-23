@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.register = async function (email, password, referredByUser, formData) {
 
     const emailExists = await this.findOne({ email })
-    
+ 
  
     if (emailExists) {
         throw Error('Email already exists!')
@@ -77,7 +77,7 @@ userSchema.statics.signIn = async function (email, password) {
     if (!match) {
         throw Error('Incorrect password.');
     }
-    
+
     return { user, surveysCompleted: user.numSurveysFilled, referralCode: user.referralCode, numRaffleEntries: user.numRaffleEntries };
 }
 
