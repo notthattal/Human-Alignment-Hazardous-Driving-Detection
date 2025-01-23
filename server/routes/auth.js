@@ -12,7 +12,6 @@ router.post('/register', async (req, res) => {
 
         res.status(200).json({ email, surveysCompleted, referralCode, token })
     } catch (err) {
-        console.error(err);
         if (err.statusCode) {
             res.status(err.statusCode).json({ message: err.message });
         } else {
@@ -32,5 +31,16 @@ router.post('/signIn', async (req, res) => {
         res.status(400).json({ err: err.message })
     }
 });
+
+router.post('/validateReferral', async (req, res) => {
+    const { code } = req.body;
+    try {
+        const { isValid } = await User.validateReferral(code)
+
+        res.status(200).json({ isValid });
+    } catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+})
 
 module.exports = router;

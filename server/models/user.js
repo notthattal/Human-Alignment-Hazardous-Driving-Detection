@@ -59,18 +59,28 @@ userSchema.statics.signIn = async function (email, password) {
     const user = await this.findOne({ email })
 
     if (!user) {
-        throw Error('The email that was provided is not valid, please try again');
+        throw Error('The email that was provided is not valid, please try again.');
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-        throw Error('Incorrect password');
+        throw Error('Incorrect password.');
     }
 
     const surveysCompleted = await Result.countDocuments({ userId: user.email });
     
     return { user, surveysCompleted, referralCode: user.referralCode };
+}
+
+userSchema.statics.validateReferral = async function (code) {
+    const referrerExists = await this.findOne({ referralCode: code })
+
+    if (!referrerExists) {
+        return { isValid: false }
+    } else {
+        return { isValid: true }
+    }
 }
 
 const User = mongoose.model('User', userSchema);
