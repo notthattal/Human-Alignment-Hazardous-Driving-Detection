@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 router.post('/results', async (req, res) => {
 
-    console.log(req.body)
+    console.log("Survey Results:", req.body)
 
     try {
         const body = req.body;
