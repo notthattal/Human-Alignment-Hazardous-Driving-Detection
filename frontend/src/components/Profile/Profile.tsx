@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
                 <i
                     className="bi bi-person-circle"
                     onClick={() => setIsOpen(!isOpen)}
-                    style={{ fontSize: '28px' }}
+                    style={{ fontSize: '34px', color: '#2d3748' }}
                 ></i>
             </div>
 
