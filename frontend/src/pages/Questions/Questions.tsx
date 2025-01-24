@@ -235,7 +235,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                             </>
                         )}
 
-                        <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%' }}>
+                        <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%', backgroundColor: '#2d3748' }}>
                             Submit
                         </Button>
                     </Form>

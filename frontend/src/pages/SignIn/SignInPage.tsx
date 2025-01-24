@@ -39,7 +39,7 @@ const TermsOfService = () => {
                 <Modal.Body style={{ maxHeight: '70vh', overflow: 'auto' }}>
                     <div className="terms-content">
                         <section className="mb-4">
-                            <h3 className="fw-bold border-bottom pb-2">1. How to Earn Raffle Entries</h3>
+                            <h3 className="fw-bold border-bottom pb-2">1) How to Earn Raffle Entries</h3>
                             <div className="ps-3">
                                 <p className="mb-2">• <strong>Registration Bonus:</strong> Receive 5 entries upon completing registration</p>
                                 <p className="mb-2">• <strong>Referral Bonus:</strong> Earn 10 entries for each person you refer who completes 3 surveys</p>
@@ -48,7 +48,7 @@ const TermsOfService = () => {
                         </section>
 
                         <section className="mb-4">
-                            <h3 className="fw-bold border-bottom pb-2">2. Eligibility Requirements</h3>
+                            <h3 className="fw-bold border-bottom pb-2">2) Eligibility Requirements</h3>
                             <div className="ps-3">
                                 <p>Participation is open to legal residents of the following states where raffle participation is permitted:</p>
                                 <div className="row ps-3">
@@ -82,7 +82,7 @@ const TermsOfService = () => {
                         </section>
 
                         <section className="mb-4">
-                            <h3 className="fw-bold border-bottom pb-2">3. Winner Selection & Prize Distribution</h3>
+                            <h3 className="fw-bold border-bottom pb-2">3) Winner Selection & Prize Distribution</h3>
                             <div className="ps-3">
                                 <p className="mb-3"><strong>Selection Process:</strong></p>
                                 <p className="mb-2">• Winners are selected randomly on the first day of each month</p>
@@ -99,7 +99,7 @@ const TermsOfService = () => {
                         </section>
 
                         <section className="mb-4">
-                            <h3 className="fw-bold border-bottom pb-2">4. Privacy & Data Protection</h3>
+                            <h3 className="fw-bold border-bottom pb-2">4) Privacy & Data Protection</h3>
                             <div className="ps-3">
                                 <p className="mb-2">• All personal information is encrypted and stored securely</p>
                                 <p className="mb-2">• Email addresses are used only for raffle-related communications</p>
@@ -112,7 +112,7 @@ const TermsOfService = () => {
                         </section>
 
                         <section className="mb-4">
-                            <h3 className="fw-bold border-bottom pb-2">5. Modifications</h3>
+                            <h3 className="fw-bold border-bottom pb-2">5) Modifications</h3>
                             <div className="ps-3">
                                 <p className="mb-2">• ONYX AI LLC reserves the right to modify these terms at any time</p>
                                 <p className="mb-2">• Changes will be announced via email with 30 days notice</p>
@@ -137,7 +137,7 @@ const SignInPage: React.FC = () => {
 
     useEffect(() => {
         const checkScreenSize = () => {
-            setIsScreenTooSmall(window.innerWidth < 1200);
+            setIsScreenTooSmall(window.innerWidth < 1062);
         };
 
         checkScreenSize();
@@ -161,25 +161,18 @@ const SignInPage: React.FC = () => {
             [name]: value,
         }));
     };
-
+    
     if (isScreenTooSmall) {
         return (
-            <Container fluid className="vh-100">
-                <div className="d-flex flex-column justify-content-center align-items-center h-100 text-center p-4">
-                    <h1 className={`${styles.title} mb-4 text-center`}>Screen Size Too Small</h1>
-                    <p className="mb-3">
-                        For the best experience, please either:
-                    </p>
-                    <ul className="list-unstyled">
-                        <li>Increase your window size</li>
-                        <li>- or -</li>
-                        <li>Use a device with a larger screen</li>
-                    </ul>
-                    <p className="mt-3 fw-bold">
-                        Minimum recommended width: 1200px
-                    </p>
-                </div>
-            </Container>
+            <div className={styles.screenWarning}>
+                <i className={`bi bi-emoji-frown-fill ${styles.floatingIcon}`}></i>
+                <h2>Screen Size Too Small</h2>
+                <p>
+                    For the best experience with our<span style={{ fontWeight: '700', color: '#FFD700'}}> Human-Aligned Hazard Detection Survey</span>, 
+                    please increase your window size or switch to a larger device. 
+                    Your feedback is important to us!
+                </p>
+            </div>
         );
     }
 
@@ -200,7 +193,7 @@ const SignInPage: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px' }}>
+                    <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px', color: '#4a5568' }}>
                         <Form.Group className="mb-4" controlId="formGridEmail">
                             <Form.Label>Email</Form.Label>
                             <Form.Control
@@ -231,7 +224,7 @@ const SignInPage: React.FC = () => {
                             </div>
                         )}
 
-                        <Button variant="dark" type="submit" className="w-100">
+                        <Button variant='dark' style={{ backgroundColor: '#2d3748' }} type="submit" className="w-100">
                             Sign In
                         </Button>
                         <p className="mt-3 text-center fst-italic">
@@ -280,13 +273,13 @@ const SignInPage: React.FC = () => {
                             </svg>
                         </div>
                         <div className={styles.celebrationText}>
-                            <h2 className={styles.celebrationHeading}>After registering</h2>
+                            <h2 className={styles.celebrationHeading}>After Registering</h2>
                             <p className={styles.celebrationSubtext}>
-                                You'll receive<br />
-                                <span className={styles.highlightText}>5 entries</span><br />
-                                towards a $100 raffle!
+                                You'll Receive<br />
+                                <span className={styles.highlightText}>5 Entries</span><br />
+                                Towards a <span className={styles.prizeText}>$100</span> Raffle!
                             </p>
-                            <p className={styles.additionalText}>
+                            <p className={styles.additionalText} style={{ fontStyle: 'italic' }}>
                                 <span className={styles.additionalHighlight}>+ 1 entry</span> for every survey completed
                             </p>
                         </div>

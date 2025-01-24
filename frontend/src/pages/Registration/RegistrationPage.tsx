@@ -4,22 +4,19 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
 import { RegistrationFormData } from '../../utils/types';
-import { Country, ReferralCode } from '../../utils/interfaces';
+import { ReferralCode } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useRegister from '../../hooks/useRegister';
 import useValidateReferral from '../../hooks/useValidateReferral';
-import { Container, Spinner } from 'react-bootstrap';
-import axios from 'axios';
+import { Container } from 'react-bootstrap';
+import { countries } from '../../utils/countries';
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const { registerUser } = useRegister();
     const { validateReferral } = useValidateReferral();
 
-    const [error, setError] = useState('');
-    const [countries, setCountries] = useState<Country[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isValidReferral, setIsValidReferral] = useState<boolean>();
 
     const REFERRAL_CODE_LENGTH = 36;
@@ -112,12 +109,12 @@ const RegistrationPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         const result = await registerUser(formData);
         if (result.success) {
             navigate('/');
         } else {
-            setError(result.error);
+            console.log('An error has occurred during registration.')
         }
     };
 
@@ -160,26 +157,6 @@ const RegistrationPage: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await axios.get("https://restcountries.com/v3.1/all");
-                const countryList = response.data.map((country: any) => ({
-                    code: country.cca2,
-                    name: country.name.common,
-                }));
-
-                setCountries(countryList.sort((a: any, b: any) => a.name.localeCompare(b.name)));
-                setLoading(false);
-            } catch (err) {
-                setError("Failed to fetch countries. Please try again.");
-                setLoading(false);
-            }
-        };
-
-        fetchCountries();
-    }, [])
-
-    useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const referralParam = urlParams.get('referral');
 
@@ -193,264 +170,256 @@ const RegistrationPage: React.FC = () => {
         }
     }, []);
 
-    if (loading) {
-        return (
-            <div style={{ minHeight: '100vh', minWidth: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Spinner
-                    animation="border"
-                    variant="dark"
-                    style={{ width: '5rem', height: '5rem' }}
-                />
-            </div>
-        );
-    }
+return (
+    <div className={styles.container}>
+        <Container className={styles.containerWrapper}>
+            <Row className="h-100">
+                {/* First Column */}
+                <Col
+                    md={12}
+                    className="d-flex flex-column justify-content-center align-items-center px-5">
+                    <div style={{ maxWidth: '650px' }}>
+                        <h1 className={`${styles.title} mb-4 text-center`}>
+                            Survey Registration
+                        </h1>
+                        <p className={`${styles.content} mb-2`}>
+                            <span style={{ color: 'red' }}>*</span> This form collects information to understand how different backgrounds influence hazard detection while driving. Your responses are confidential and used only for research purposes.
+                        </p>
+                        <p className={`${styles.content} mb-4`}>
+                            <span style={{ color: 'red' }}>*</span> Participation is voluntary
+                        </p>
+                    </div>
+                    <div className='mb-4' style={{ width: '700px', border: '0.2px solid grey' }}></div>
+                    <div style={{ maxWidth: '700px', width: '100%' }}>
+                        <Form onSubmit={handleSubmit} style={{ color: '#4a5568'}}>
+                            <Form.Group className='mb-4' controlId="formGridEmail" >
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    placeholder="name@example.com"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
 
-    return (
-        <div className={styles.container}>
-            <Container className={styles.containerWrapper}>
-                <Row className="h-100">
-                    {/* First Column */}
-                    <Col
-                        md={12}
-                        className="d-flex flex-column justify-content-center align-items-center px-5">
-                        <div style={{ maxWidth: '650px' }}>
-                            <h1 className={`${styles.title} mb-4 text-center`}>
-                                Survey Registration
-                            </h1>
-                            <p className={`${styles.content} mb-4`}>
-                               <span style={{color: 'red'}}>*</span> This form collects information to understand how different backgrounds influence hazard detection while driving. Your responses are confidential and used only for research purposes. Participation is voluntary
-                            </p>
-                        </div>
-                        <div style={{ maxWidth: '700px', width: '100%' }}>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group className='mb-4' controlId="formGridEmail" >
-                                    <Form.Label>Email</Form.Label>
+                            <Row className='mb-4'>
+                                <Form.Group as={Col} controlId="formGridPassword">
+                                    <Form.Label>Password</Form.Label>
                                     <Form.Control
-                                        type="email"
-                                        placeholder="name@example.com"
-                                        name="email"
-                                        value={formData.email}
+                                        type="password"
+                                        placeholder="Enter Password"
+                                        name="password"
+                                        value={formData.password}
                                         onChange={handleChange}
                                         required
                                     />
                                 </Form.Group>
 
-                                <Row className='mb-4'>
-                                    <Form.Group as={Col} controlId="formGridPassword">
-                                        <Form.Label>Password</Form.Label>
+                                <Form.Group as={Col} controlId="formGridPassword">
+                                    <Form.Label>Confirm Password</Form.Label>
+                                    <Form.Control
+                                        type="password"
+                                        placeholder="Confirm Password"
+                                        name="confirmedPassword"
+                                        value={confirmedPassword}
+                                        onChange={handleConfirmPassword}
+                                        required
+                                        disabled={formData.password ? false : true}
+                                        isInvalid={confirmedPassword && formData.password && confirmedPassword != formData.password ? true : false}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Passwords do not match.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Row>
+
+                            <Form.Group className='mb-4' controlId="formGridCountry" >
+                                <Form.Label>Country</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="country"
+                                    placeholder="name@example.com"
+                                    value={formData.country}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select...</option>
+                                    {countries.map((country) => (
+                                        <option key={country.code} value={country.code}>
+                                            {country.name}
+                                        </option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+
+                            {formData.country === 'US' && (
+                                <Row className="mb-4">
+                                    <Form.Group as={Col} controlId="formGridCity">
+                                        <Form.Label>City</Form.Label>
                                         <Form.Control
-                                            type="password"
-                                            placeholder="Enter Password"
-                                            name="password"
-                                            value={formData.password}
+                                            type="text"
+                                            placeholder="Enter City"
+                                            name="city"
+                                            value={formData.city || ""}
                                             onChange={handleChange}
                                             required
                                         />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formGridPassword">
-                                        <Form.Label>Confirm Password</Form.Label>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>State</Form.Label>
                                         <Form.Control
-                                            type="password"
-                                            placeholder="Confirm Password"
-                                            name="confirmedPassword"
-                                            value={confirmedPassword}
-                                            onChange={handleConfirmPassword}
+                                            as="select"
+                                            name="state"
+                                            value={formData.state || ""}
+                                            onChange={handleChange}
                                             required
-                                            disabled={formData.password ? false : true}
-                                            isInvalid={confirmedPassword && formData.password && confirmedPassword != formData.password ? true : false}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Passwords do not match.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                </Row>
-
-                                <Form.Group className='mb-4' controlId="formGridCountry" >
-                                    <Form.Label>Country</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="country"
-                                        placeholder="name@example.com"
-                                        value={formData.country}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select...</option>
-                                        {countries.map((country) => (
-                                            <option key={country.code} value={country.code}>
-                                                {country.name}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-
-                                {formData.country === 'US' && (
-                                    <Row className="mb-4">
-                                        <Form.Group as={Col} controlId="formGridCity">
-                                            <Form.Label>City</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Enter City"
-                                                name="city"
-                                                value={formData.city || ""}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formGridState">
-                                            <Form.Label>State</Form.Label>
-                                            <Form.Control
-                                                as="select"
-                                                name="state"
-                                                value={formData.state || ""}
-                                                onChange={handleChange}
-                                                required
-                                            >
-                                                <option value="">Select...</option>
-                                                {states.map((state, index) => (
-                                                    <option key={index} value={state.name}>
-                                                        {state.name}
-                                                    </option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Row>
-                                )}
-
-                                <Row className="mb-4">
-                                    {/* Current Age */}
-                                    <Form.Group as={Col} controlId="formAge">
-                                        <Form.Label>Age</Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="Enter age"
-                                            name="age"
-                                            min="0"
-                                            max="100"
-                                            required
-                                            value={formData.age || ''}
-                                            onChange={(e) => {
-                                                const inputValue = e.target.value;
-                                                if (inputValue === '') {
-                                                    setFormData({ ...formData, age: 0 });
-                                                } else {
-                                                    const value = Math.max(0, Math.min(150, Number(inputValue)));
-                                                    setFormData({ ...formData, age: value });
-                                                }
-                                            }}
-                                        />
-                                    </Form.Group>
-
-                                    {/* Gender */}
-                                    <Form.Group as={Col} controlId="formGender">
-                                        <Form.Label>Gender</Form.Label>
-                                        <Form.Select name="gender" value={formData.gender} onChange={handleChange}>
+                                        >
                                             <option value="">Select...</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="prefer-not-to-say">Prefer not to say</option>
-                                        </Form.Select>
+                                            {states.map((state, index) => (
+                                                <option key={index} value={state.name}>
+                                                    {state.name}
+                                                </option>
+                                            ))}
+                                        </Form.Control>
                                     </Form.Group>
                                 </Row>
+                            )}
 
-                                {/* Ethnicity */}
-                                <Form.Group className="mb-4" controlId="formEthnicity">
-                                    <Form.Label>Ethnicity</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="ethnicity"
-                                        value={formData.ethnicity}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="">Select...</option>
-                                        {ethnicities.map((ethnicity, index) => (
-                                            <option key={index} value={ethnicity}>
-                                                {ethnicity}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-
-                                {/* License Age */}
-                                <Form.Group className="mb-4" controlId="formLicenseAge">
-                                    <Form.Label>At what age did you obtain your drivers license (approximately)?</Form.Label>
+                            <Row className="mb-4">
+                                {/* Current Age */}
+                                <Form.Group as={Col} controlId="formAge">
+                                    <Form.Label>Age</Form.Label>
                                     <Form.Control
                                         type="number"
                                         placeholder="Enter age"
-                                        name="licenseAge"
-                                        value={formData.licenseAge}
-                                        onChange={handleChange}
+                                        name="age"
+                                        min="0"
+                                        max="100"
                                         required
+                                        value={formData.age || ''}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            if (inputValue === '') {
+                                                setFormData({ ...formData, age: 0 });
+                                            } else {
+                                                const value = Math.max(0, Math.min(150, Number(inputValue)));
+                                                setFormData({ ...formData, age: value });
+                                            }
+                                        }}
                                     />
                                 </Form.Group>
 
-                                {/* Visually Impaired */}
-                                <Form.Group className="mb-4" controlId="formVisuallyImpaired">
-                                    <Form.Label>Are you visually impaired or do you wear glasses?</Form.Label>
-                                    <div>
-                                        <Form.Check
-                                            type="radio"
-                                            label="Yes"
-                                            name="visuallyImpaired"
-                                            value="true"
-                                            checked={formData.visuallyImpaired === true}
-                                            onChange={(e) => {
-                                                const value = e.target.value === "true";
-                                                setFormData(prevState => ({
-                                                    ...prevState,
-                                                    visuallyImpaired: value
-                                                }));
-                                            }}
-                                        />
-                                        <Form.Check
-                                            type="radio"
-                                            label="No"
-                                            name="visuallyImpaired"
-                                            value="false"
-                                            checked={formData.visuallyImpaired === false}
-                                            onChange={(e) => {
-                                                const value = e.target.value === "true";
-                                                setFormData(prevState => ({
-                                                    ...prevState,
-                                                    visuallyImpaired: value
-                                                }));
-                                            }}
-                                        />
-                                    </div>
+                                {/* Gender */}
+                                <Form.Group as={Col} controlId="formGender">
+                                    <Form.Label>Gender</Form.Label>
+                                    <Form.Select name="gender" value={formData.gender} onChange={handleChange}>
+                                        <option value="">Select...</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="prefer-not-to-say">Prefer not to say</option>
+                                    </Form.Select>
                                 </Form.Group>
+                            </Row>
 
-                                {/* Enter Referral Code */}
-                                <Form.Group className='mb-4 position-relative' controlId="formGridReferredByUser">
-                                    <Form.Label>Referral Code (Optional)</Form.Label>
-                                    <div className="d-flex align-items-center">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="xxxxx-xxxxx-xxxxx-xxxxx"
-                                            name="referredByUser"
-                                            value={formData.referredByUser}
-                                            onChange={handleChange}
-                                            className={formData.referredByUser ? (isValidReferral ? 'is-valid' : 'is-invalid') : ''}
-                                        />
-                                    </div>
-                                </Form.Group>
+                            {/* Ethnicity */}
+                            <Form.Group className="mb-4" controlId="formEthnicity">
+                                <Form.Label>Ethnicity</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="ethnicity"
+                                    value={formData.ethnicity}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select...</option>
+                                    {ethnicities.map((ethnicity, index) => (
+                                        <option key={index} value={ethnicity}>
+                                            {ethnicity}
+                                        </option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
 
-                                <div className={styles.buttonGroup}>
-                                    <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
-                                        Submit
-                                    </Button>
-                                    <Button variant="danger" onClick={handleNavigate} style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
-                                        Cancel
-                                    </Button>
+                            {/* License Age */}
+                            <Form.Group className="mb-4" controlId="formLicenseAge">
+                                <Form.Label>At what age did you obtain your drivers license (approximately)?</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Enter age"
+                                    name="licenseAge"
+                                    value={formData.licenseAge}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+
+                            {/* Visually Impaired */}
+                            <Form.Group className="mb-4" controlId="formVisuallyImpaired">
+                                <Form.Label>Are you visually impaired or do you wear glasses?</Form.Label>
+                                <div>
+                                    <Form.Check
+                                        type="radio"
+                                        label="Yes"
+                                        name="visuallyImpaired"
+                                        value="true"
+                                        checked={formData.visuallyImpaired === true}
+                                        onChange={(e) => {
+                                            const value = e.target.value === "true";
+                                            setFormData(prevState => ({
+                                                ...prevState,
+                                                visuallyImpaired: value
+                                            }));
+                                        }}
+                                    />
+                                    <Form.Check
+                                        type="radio"
+                                        label="No"
+                                        name="visuallyImpaired"
+                                        value="false"
+                                        checked={formData.visuallyImpaired === false}
+                                        onChange={(e) => {
+                                            const value = e.target.value === "true";
+                                            setFormData(prevState => ({
+                                                ...prevState,
+                                                visuallyImpaired: value
+                                            }));
+                                        }}
+                                    />
                                 </div>
-                            </Form>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
-    )
+                            </Form.Group>
+
+                            {/* Enter Referral Code */}
+                            <Form.Group className='mb-4 position-relative' controlId="formGridReferredByUser">
+                                <Form.Label>Referral Code (Optional)</Form.Label>
+                                <div className="d-flex align-items-center">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="xxxxx-xxxxx-xxxxx-xxxxx"
+                                        name="referredByUser"
+                                        value={formData.referredByUser}
+                                        onChange={handleChange}
+                                        className={formData.referredByUser ? (isValidReferral ? 'is-valid' : 'is-invalid') : ''}
+                                    />
+                                </div>
+                            </Form.Group>
+
+                            <div className={styles.buttonGroup}>
+                                <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px', backgroundColor: '#2d3748' }}>
+                                    Submit
+                                </Button>
+                                <Button variant="danger" onClick={handleNavigate} style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        </Form>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
+    </div>
+)
 }
 
 export default RegistrationPage;

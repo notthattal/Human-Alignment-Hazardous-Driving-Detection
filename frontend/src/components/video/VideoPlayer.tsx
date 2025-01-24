@@ -124,7 +124,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ onVideoComplete, passVideoId,
     }
 
     return (
-        <div className="video-container" style={{ overflow: 'hidden' }}>
+        <div className="video-container" style={{ overflow: 'hidden', background: 'black' }}>
             {videoUrl && (
                 <div style={{ position: 'relative' }}>
                     <video
