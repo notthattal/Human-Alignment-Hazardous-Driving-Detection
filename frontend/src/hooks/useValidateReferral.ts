@@ -4,7 +4,7 @@ import { ReferralCode } from "../utils/interfaces";
 const useValidateReferral = () => {
     const validateReferral = async (referralCode: ReferralCode) => {
         try {
-            const response = await axios.post('http://localhost:3001/auth/validateReferral', referralCode);
+            const response = await axios.post('https://human-alignment-hazardous-driving.onrender.com/auth/validateReferral', referralCode);
 
             if (response.data.isValid) {
                 return { isValid: true }

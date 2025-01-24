@@ -6,24 +6,47 @@ import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
 import Profile from "../../components/Profile/Profile";
 import UserStats from "../../components/UserStats/UserStats";
+import Leaderboard from "../../components/Leaderboard/Leaderboard";
+import axios from "axios";
 
 const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
-
     const [userData, setUserData] = useState({
+        email: '',
         surveysCompleted: 0,
         numRaffleEntries: 0
     });
 
+    const [topUsers, setTopUsers] = useState<Array<{ email: string, numRaffleEntries: number }>>([]);
+    const [currentUserRank, setCurrentUserRank] = useState<number>(0);
+
     useEffect(() => {
+        const fetchTopUsers = async () => {
+            try {
+                const response = await axios.get('https://human-alignment-hazardous-driving.onrender.com/survey/top-raffle-entries', {
+                    params: {
+                        currentUserEmail: userData.email
+                    }
+                });
+                setTopUsers(response.data.topUsers);
+                setCurrentUserRank(response.data.currentUserRank);
+            } catch (error) {
+                console.error('Failed to fetch top users', error);
+            }
+        };
+
         const userItem = localStorage.getItem('user');
+        
         if (userItem) {
             const user = JSON.parse(userItem);
+            console.log('user retrieved from local storage', user);
             setUserData({
+                email: user.email,
                 surveysCompleted: user.surveysCompleted,
                 numRaffleEntries: user.numRaffleEntries
             });
+            fetchTopUsers();
         }
     }, []);
 
@@ -55,6 +78,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
 
             // Update local state
             setUserData({
+                email: updatedUser.email,
                 surveysCompleted: updatedUser.surveysCompleted,
                 numRaffleEntries: updatedUser.numRaffleEntries
             });
@@ -108,6 +132,14 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
 
     return (
         <div className={styles.container}>
+            <Leaderboard 
+                topUsers={topUsers} 
+                currentUser={{
+                    email: userData.email, 
+                    numRaffleEntries: userData.numRaffleEntries
+                }}
+                currentUserRank={currentUserRank}
+                />
             <UserStats 
                 surveysCompleted={userData.surveysCompleted}
                 numRaffleEntries={userData.numRaffleEntries}

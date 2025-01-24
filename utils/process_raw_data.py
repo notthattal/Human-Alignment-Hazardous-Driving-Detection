@@ -2,10 +2,10 @@ import os
 import subprocess
 
 # Path to the folder containing the video files
-video_folder = "/Users/lennoxanderson/Documents/Research/RawDrivingData" 
+video_folder = "/Users/lennoxanderson/Documents/machineLearning/data/TeslaRawDrivingFootage/RecentClips"  # Replace with your folder path
 
 # Output folder for combined videos
-output_folder = "/Users/lennoxanderson/Documents/Research/ProcessedDrivingData"  
+output_folder = "/Users/lennoxanderson/Documents/machineLearning/data/TeslaRawDrivingFootage/SecondBatch"  # Replace with your desired output folder
 os.makedirs(output_folder, exist_ok=True)
 
 # Camera types to process
@@ -46,4 +46,4 @@ def combine_videos(camera_type):
 
 # Process each camera type
 for camera in camera_types:
-
+    combine_videos(camera)

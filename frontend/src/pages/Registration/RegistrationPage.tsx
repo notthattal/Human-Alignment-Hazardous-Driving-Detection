@@ -16,7 +16,7 @@ const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const { registerUser } = useRegister();
     const { validateReferral } = useValidateReferral();
-
+  
     const [isValidReferral, setIsValidReferral] = useState<boolean>();
 
     const REFERRAL_CODE_LENGTH = 36;
@@ -114,6 +114,7 @@ const RegistrationPage: React.FC = () => {
         if (result.success) {
             navigate('/');
         } else {
+
             console.log('An error has occurred during registration.')
         }
     };
