@@ -25,7 +25,7 @@ function truncateEmail(email: string) {
 }
 
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser, currentUserRank }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser }) => {
   return (
     <div className={styles.leaderboardContainer}>
       <div className={styles.leaderboardTitle}>Raffle Leaderboard</div>
