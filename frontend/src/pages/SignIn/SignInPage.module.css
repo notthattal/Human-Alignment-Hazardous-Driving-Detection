@@ -3,7 +3,10 @@
     font-family: 'Roboto', sans-serif;
     text-align: center;
     font-weight: 700;
-    color: #2D404E;
+    background: linear-gradient(145deg, #2d3748 0%, #3a4758 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; /* Fallback for non-webkit browsers */
   }
   
   .content {
@@ -38,7 +41,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border-radius: 25px;
+    box-shadow: 5px 5px 10px 10px rgba(0, 1, 0, 0.1);
+    padding-top: 65px;
+    padding-bottom: 65px;
   }
   
   .celebrationContainer {
@@ -49,9 +58,14 @@
     padding: 2rem;
     gap: 2rem;
     height: 100%;
-    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+    background: linear-gradient(90deg, #2d3748 50%, #3a4758 100%);
     position: relative;
     overflow: hidden;
+  }
+
+  .submitButton {
+    width: 100%;
+    background: linear-gradient(180deg, #2d3748 50%, #3a4758 100%);
   }
   
   .celebrationSvg {

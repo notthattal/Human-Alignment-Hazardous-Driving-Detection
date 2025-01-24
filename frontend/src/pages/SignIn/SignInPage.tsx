@@ -161,15 +161,15 @@ const SignInPage: React.FC = () => {
             [name]: value,
         }));
     };
-    
+
     if (isScreenTooSmall) {
         return (
             <div className={styles.screenWarning}>
                 <i className={`bi bi-emoji-frown-fill ${styles.floatingIcon}`}></i>
                 <h2>Screen Size Too Small</h2>
                 <p>
-                    For the best experience with our<span style={{ fontWeight: '700', color: '#FFD700'}}> Human-Aligned Hazard Detection Survey</span>, 
-                    please increase your window size or switch to a larger device. 
+                    For the best experience with our<span style={{ fontWeight: '700', color: '#FFD700' }}> Human-Aligned Hazard Detection Survey</span>,
+                    please increase your window size or switch to a larger device.
                     Your feedback is important to us!
                 </p>
             </div>
@@ -183,59 +183,60 @@ const SignInPage: React.FC = () => {
                 <Col
                     md={6}
                     className="d-flex flex-column justify-content-center align-items-center px-5">
-                    <div className={styles.headerWrapper}>
-                        <h1 className={`${styles.title} mb-4 text-center`}>
-                            Welcome to the Human-Aligned Hazard Detection Survey.
-                        </h1>
-                        <div className={styles.contentWrapper}>
-                            <p className={`${styles.content} mb-4`}>
-                                Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
-                            </p>
-                        </div>
-                    </div>
-                    <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px', color: '#4a5568' }}>
-                        <Form.Group className="mb-4" controlId="formGridEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="name@example.com"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-4" controlId="formGridPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Enter Password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-
-                        {error && (
-                            <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
-                                {error}
+                    <div className={styles.containerWrapper}>
+                        <div className={styles.headerWrapper}>
+                            <h1 className={`${styles.title} mb-4 text-center`}>
+                                Welcome to the Human-Aligned Hazard Detection Survey.
+                            </h1>
+                            <div className={styles.contentWrapper}>
+                                <p className={`${styles.content} mb-4`}>
+                                    Human Aligned Hazardous Detection (HAHD) is a research initiative aimed at making driving behavior in autonomous systems more aligned with human decision-making.
+                                </p>
                             </div>
-                        )}
+                        </div>
+                        <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px', color: '#4a5568' }}>
+                            <Form.Group className="mb-4" controlId="formGridEmail">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    placeholder="name@example.com"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
 
-                        <Button variant='dark' style={{ backgroundColor: '#2d3748' }} type="submit" className="w-100">
-                            Sign In
-                        </Button>
-                        <p className="mt-3 text-center fst-italic">
-                            Don't have an account? <Link to="/registration">Sign up</Link>
-                        </p>
-                    </Form>
+                            <Form.Group className="mb-4" controlId="formGridPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Enter Password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+
+                            {error && (
+                                <div className="m-4" style={{ color: 'red', fontSize: '15px', textAlign: 'left' }}>
+                                    {error}
+                                </div>
+                            )}
+
+                            <Button type="submit" className={styles.submitButton}>
+                                Sign In
+                            </Button>
+                            <p className="mt-3 text-center fst-italic">
+                                Don't have an account? <Link to="/registration">Sign up</Link>
+                            </p>
+                        </Form>
+                    </div>
                 </Col>
 
                 {/* Second Column */}
-                <Col md={6} className="bg-dark">
-                    <div className={styles.celebrationContainer}>
+                <Col md={6} className={styles.celebrationContainer}> 
                         <div className={styles.celebrationSvg}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                                 {/* Popper Base */}
@@ -284,7 +285,6 @@ const SignInPage: React.FC = () => {
                             </p>
                         </div>
                         <TermsOfService />
-                    </div>
                 </Col>
             </Row>
         </Container>

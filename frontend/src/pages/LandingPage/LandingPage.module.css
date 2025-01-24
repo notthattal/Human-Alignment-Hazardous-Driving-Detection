@@ -20,14 +20,14 @@
 
 .button {
   margin-top: 10px;
-  padding: 15px 35px 15px 35px;
+  padding: 18px 38px 18px 38px;
   background-color: #2d3748;
 }
 
 .button:hover {
-  padding: 18px 38px 18px 38px;
-  transition: 1s;
+  transition: 0.5s;
   background-color: red;
+  border: 0.2px solid red;
   color: white;
 }
 
@@ -36,7 +36,7 @@
   max-height: 100vh;
   object-fit: contain; 
   border: 2px solid #2d3748;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 .videoContainer {
@@ -81,7 +81,7 @@
   justify-content: center;
   min-height: 80vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px; 
+  border-radius: 25px; 
   padding: 20px; 
 }
 
@@ -112,6 +112,11 @@
   color: white;
 }
 
+.nextButton:hover {
+  background-color: #FFD700;
+  transition: 0.4s;
+}
+
 .backButton:disabled,
 .nextButton:disabled {
   opacity: 0.4;
@@ -139,7 +144,7 @@
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 25px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -173,5 +178,25 @@
 
   .button {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contentWrapper {
+    padding: 10px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .video {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .description {
+    font-size: 14px;
   }
 }
