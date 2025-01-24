@@ -4,21 +4,19 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row';
 import { RegistrationFormData } from '../../utils/types';
-import { Country, ReferralCode } from '../../utils/interfaces';
+import { ReferralCode } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useRegister from '../../hooks/useRegister';
 import useValidateReferral from '../../hooks/useValidateReferral';
-import { Container, Spinner } from 'react-bootstrap';
-import axios from 'axios';
+import { Container } from 'react-bootstrap';
+import { countries } from '../../utils/countries';
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const { registerUser } = useRegister();
     const { validateReferral } = useValidateReferral();
-
-    const [countries, setCountries] = useState<Country[]>([]);
-    const [loading, setLoading] = useState(true);
+  
     const [isValidReferral, setIsValidReferral] = useState<boolean>();
 
     const REFERRAL_CODE_LENGTH = 36;
@@ -111,12 +109,13 @@ const RegistrationPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         const result = await registerUser(formData);
         if (result.success) {
             navigate('/');
         } else {
-            console.log("")
+
+            console.log('An error has occurred during registration.')
         }
     };
 
@@ -139,7 +138,7 @@ const RegistrationPage: React.FC = () => {
         if (name === 'referredByUser' && value.length == REFERRAL_CODE_LENGTH) {
             const referralCode: ReferralCode = { code: value }
             handleValidateReferral(referralCode);
-        } else if (name === 'referredByUser' && value.length >= 1 ) {
+        } else if (name === 'referredByUser' && value.length >= 1) {
             setIsValidReferral(false);
         }
     };
@@ -159,53 +158,22 @@ const RegistrationPage: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await axios.get("https://restcountries.com/v3.1/all");
-                const countryList = response.data.map((country: any) => ({
-                    code: country.cca2,
-                    name: country.name.common,
-                }));
-
-                setCountries(countryList.sort((a: any, b: any) => a.name.localeCompare(b.name)));
-                setLoading(false);
-            } catch (err) {
-                console.log("err")
-                setLoading(false);
-            }
-        };
-
-        fetchCountries();
-    }, [])
-
-    useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const referralParam = urlParams.get('referral');
-        
+
         if (referralParam && referralParam.length === REFERRAL_CODE_LENGTH) {
             setFormData(prev => ({
                 ...prev,
                 referredByUser: referralParam
             }));
-            
+
             handleValidateReferral({ code: referralParam });
         }
     }, []);
 
-    if (loading) {
-        return (
-            <div style={{ minHeight: '100vh', minWidth: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Spinner
-                    animation="border"
-                    variant="dark"
-                    style={{ width: '5rem', height: '5rem' }}
-                />
-            </div>
-        );
-    }
-
-    return (
-        <Container fluid className="vh-100 px-4 py-4">
+return (
+    <div className={styles.container}>
+        <Container className={styles.containerWrapper}>
             <Row className="h-100">
                 {/* First Column */}
                 <Col
@@ -215,12 +183,16 @@ const RegistrationPage: React.FC = () => {
                         <h1 className={`${styles.title} mb-4 text-center`}>
                             Survey Registration
                         </h1>
-                        <p className={`${styles.content} mb-4 text-center`}>
-                            This form collects information to understand how different backgrounds influence hazard detection while driving. Your responses are confidential and used only for research purposes. Participation is voluntary
+                        <p className={`${styles.content} mb-2`}>
+                            <span style={{ color: 'red' }}>*</span> This form collects information to understand how different backgrounds influence hazard detection while driving. Your responses are confidential and used only for research purposes.
+                        </p>
+                        <p className={`${styles.content} mb-4`}>
+                            <span style={{ color: 'red' }}>*</span> Participation is voluntary
                         </p>
                     </div>
+                    <div className='mb-4' style={{ width: '700px', border: '0.2px solid grey' }}></div>
                     <div style={{ maxWidth: '700px', width: '100%' }}>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} style={{ color: '#4a5568'}}>
                             <Form.Group className='mb-4' controlId="formGridEmail" >
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
@@ -435,7 +407,7 @@ const RegistrationPage: React.FC = () => {
                             </Form.Group>
 
                             <div className={styles.buttonGroup}>
-                                <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
+                                <Button variant="dark" type="submit" style={{ padding: '6px 45px 6px 45px', marginTop: '25px', backgroundColor: '#2d3748' }}>
                                     Submit
                                 </Button>
                                 <Button variant="danger" onClick={handleNavigate} style={{ padding: '6px 45px 6px 45px', marginTop: '25px' }}>
@@ -447,7 +419,8 @@ const RegistrationPage: React.FC = () => {
                 </Col>
             </Row>
         </Container>
-    )
+    </div>
+)
 }
 
 export default RegistrationPage;
