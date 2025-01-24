@@ -17,7 +17,6 @@ const RegistrationPage: React.FC = () => {
     const { registerUser } = useRegister();
     const { validateReferral } = useValidateReferral();
 
-    const [error, setError] = useState('');
     const [countries, setCountries] = useState<Country[]>([]);
     const [loading, setLoading] = useState(true);
     const [isValidReferral, setIsValidReferral] = useState<boolean>();
@@ -117,7 +116,7 @@ const RegistrationPage: React.FC = () => {
         if (result.success) {
             navigate('/');
         } else {
-            setError(result.error);
+            console.log("")
         }
     };
 
@@ -171,7 +170,7 @@ const RegistrationPage: React.FC = () => {
                 setCountries(countryList.sort((a: any, b: any) => a.name.localeCompare(b.name)));
                 setLoading(false);
             } catch (err) {
-                setError("Failed to fetch countries. Please try again.");
+                console.log("err")
                 setLoading(false);
             }
         };
