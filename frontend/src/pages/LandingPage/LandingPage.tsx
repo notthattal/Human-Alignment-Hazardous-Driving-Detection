@@ -76,7 +76,7 @@ const LandingPage: React.FC = () => {
                                 muted
                                 playsInline
                             />
-                            <div className={styles.keyboardContainer}>
+                            {/* <div className={styles.keyboardContainer}>
                                 <svg viewBox="0 0 400 200" className={styles.keyboard}>
                                     <rect x="50" y="40" width="300" height="120" rx="10" fill="#2f3640" filter="url(#shadow)" />
                                     <g fill="#3f4853">
@@ -115,7 +115,7 @@ const LandingPage: React.FC = () => {
                                         Press the Space Bar when you spot a hazard
                                     </text>
                                 </svg>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 );
