@@ -1,6 +1,6 @@
 import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Stepper, Step, StepLabel, Box } from "@mui/material";
+import { Stepper, Step, StepLabel, Box, StepIcon } from "@mui/material";
 import calibrationTutorial from "../../assets/CalibrationTutorialHAHD.mp4";
 import simulationVideo from "../../assets/SimulationTutorial.mp4";
 import questionnaireTutorial from "../../assets/QuestionnaireTutorial.mp4";
@@ -8,16 +8,16 @@ import { useState } from "react";
 import Profile from "../../components/Profile/Profile";
 import styles from "./LandingPage.module.css";
 
-const steps = [
-    "Eye-Tracker Calibration",
-    "Observe Driving Footage",
-    "Post-Simulation Survey",
-    "Complete the Survey",
-];
-
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState<number>(0);
+
+    const steps = [
+        "Eye-Tracker Calibration",
+        "Observe Driving Footage",
+        "Post-Simulation Survey",
+        "End Instructions",
+    ];
 
     const handleBeginCalibration = () => {
         const permissions = window.confirm(
@@ -147,8 +147,11 @@ const LandingPage: React.FC = () => {
                         </p>
                         <p className={styles.description}>Your referral link can be found by clicking on the <i
                             className="bi bi-person-circle"
-                            style={{ fontSize: '24px', color: '#2d3748' }}
+                            style={{ fontSize: '22px', color: '#2d3748' }}
                         ></i> icon in the top-right corner of your screen.</p>
+                        <p className={styles.description}>
+                            Each survey takes approximately 45 seconds to 1 minute and 30 seconds to complete.
+                        </p>
                         <p className={styles.description}>
                             Thank you for participating in the <b>Human-Aligned Hazardous Dectection Survey</b>. Your contributions are
                             valuable to our research!
@@ -167,7 +170,6 @@ const LandingPage: React.FC = () => {
         }
     };
 
-    // Rest of the component remains the same...
     return (
         <Container fluid className={styles.container}>
             <Profile />
@@ -175,9 +177,28 @@ const LandingPage: React.FC = () => {
             {/* Stepper Component */}
             <Box sx={{ width: "100%", mb: 3 }}>
                 <Stepper activeStep={activeStep} alternativeLabel>
-                    {steps.map((label) => (
+                    {steps.map((label, index) => (
                         <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
+                            <StepLabel
+                                slots={{
+                                    stepIcon: (iconProps) => (
+                                        <StepIcon
+                                            {...iconProps}
+                                            sx={{
+                                                '&.MuiStepIcon-root': {
+                                                    color: activeStep > index
+                                                        ? '#FFD700'
+                                                        : activeStep === index
+                                                            ? '#2d3748'
+                                                            : 'gray'
+                                                }
+                                            }}
+                                        />
+                                    )
+                                }}
+                            >
+                                {label}
+                            </StepLabel>
                         </Step>
                     ))}
                 </Stepper>
