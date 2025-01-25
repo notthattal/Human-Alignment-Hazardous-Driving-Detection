@@ -20,6 +20,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
 
     const [topUsers, setTopUsers] = useState<Array<{ email: string, numRaffleEntries: number }>>([]);
     const [currentUserRank, setCurrentUserRank] = useState<number>(0);
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
     useEffect(() => {
         const fetchTopUsers = async () => {
@@ -70,6 +71,8 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
         e.preventDefault();
         if (onFormSumbitted) {
             onFormSumbitted();
+            // Call-Back for Leaderboard Entry Animation
+            setFormSubmitted(true);
         }
 
         const userItem = localStorage.getItem('user')
@@ -145,6 +148,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                     numRaffleEntries: userData.numRaffleEntries
                 }}
                 currentUserRank={currentUserRank}
+                formSubmitted={formSubmitted}
             />
             <UserStats
                 surveysCompleted={userData.surveysCompleted}

@@ -18,8 +18,9 @@ function truncateEmail(email: string) {
   return email;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser, currentUserRank }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser, currentUserRank, formSubmitted }) => {
   const [isCurrentUserTopFive, setIsCurrentUserTopFive] = useState(false);
+  const [showEntryAnimation, setShowEntryAnimation] = useState(false);
 
   useEffect(() => {
     const currentUserTopFive = () => {
@@ -33,6 +34,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser, curren
     };
     currentUserTopFive();
   }, [topUsers])
+
+  useEffect(() => {
+    if (formSubmitted) {
+      setShowEntryAnimation(true);
+    }
+  })
 
   return (
     <div className={styles.leaderboardContainer}>
@@ -50,7 +57,11 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ topUsers, currentUser, curren
             <tr key={user.email} className={user.email === currentUser.email ? styles.currentUserRow : ''}>
               <td>{index + 1}</td>
               <td>{truncateEmail(user.email)}</td>
-              <td>{user.numRaffleEntries}</td>
+              <td>{user.numRaffleEntries}
+                {showEntryAnimation && user.email === currentUser.email &&(
+                  <span style={{ color: 'green', fontStyle: 'italic' }}> + 1 </span>
+                )}
+              </td>
             </tr>
           ))}
           {!isCurrentUserTopFive && currentUser.email && (

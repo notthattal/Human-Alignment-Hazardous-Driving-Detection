@@ -76,4 +76,5 @@ export interface LeaderboardProps {
     topUsers: Array<{ email: string, numRaffleEntries: number }>;
     currentUser: { email: string, numRaffleEntries: number };
     currentUserRank: number;
+    formSubmitted: boolean;
   }
