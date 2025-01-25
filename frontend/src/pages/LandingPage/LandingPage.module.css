@@ -33,12 +33,18 @@
 
 .description {
   font-size: clamp(14px, 1.4vw, 22px);
-  line-height: 1.5;
+  line-height: 1.8;
   margin-bottom: 20px;
   text-align: left;
   color: #4a5568;
   max-width: 100%;
   width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .video {
@@ -47,7 +53,7 @@
   height: auto;
   max-height: 70vh;
   object-fit: contain;
-  border: 2px solid #2d3748;
+  border: 5px solid #2d3748;
   border-radius: 25px;
   margin: 0 auto;
 }
@@ -80,8 +86,13 @@
   color: white;
 }
 
+.nextButton:hover {
+  background-color: #FFD700;
+  transition: 0.5s;
+}
+
 .button {
-  margin-top: 80px;
+  margin-top: 40px;
   padding: 18px 38px 18px 38px;
   background-color: #2d3748;
 }

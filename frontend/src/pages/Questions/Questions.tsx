@@ -24,23 +24,27 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
     useEffect(() => {
         const fetchTopUsers = async () => {
             try {
-                const response = await axios.get('https://human-alignment-hazardous-driving.onrender.com/survey/top-raffle-entries', {
-                    params: {
-                        currentUserEmail: userData.email
-                    }
-                });
-                setTopUsers(response.data.topUsers);
-                setCurrentUserRank(response.data.currentUserRank);
+                const userItem = localStorage.getItem('user');
+                if (userItem) {
+                    const user = JSON.parse(userItem);
+
+                    const response = await axios.get('http://localhost:3001/survey/top-raffle-entries', {
+                        params: {
+                            currentUserEmail: user.email
+                        }
+                    });
+                    setTopUsers(response.data.topUsers);
+                    setCurrentUserRank(response.data.currentUserRank);
+                }
             } catch (error) {
                 console.error('Failed to fetch top users', error);
             }
         };
 
         const userItem = localStorage.getItem('user');
-        
+
         if (userItem) {
             const user = JSON.parse(userItem);
-            console.log('user retrieved from local storage', user);
             setUserData({
                 email: user.email,
                 surveysCompleted: user.surveysCompleted,
@@ -75,7 +79,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
             const userId = user.email
 
             // Update Survey Completion Count in Local Storage
-            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1, numRaffleEntries: user.numRaffleEntries + 1}
+            const updatedUser = { ...user, surveysCompleted: user.surveysCompleted + 1, numRaffleEntries: user.numRaffleEntries + 1 }
             localStorage.setItem('user', JSON.stringify(updatedUser))
 
             // Update local state
@@ -92,8 +96,6 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                 formData: formData,
                 numSurveysCompleted: updatedUser.surveysCompleted
             }
-            console.log('END TIME MINUS START TIME', formData.endTime - formData.startTime)
-            console.log('RESULTS', results)
 
             try {
                 await postResults(results)
@@ -136,15 +138,15 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
 
     return (
         <div className={styles.container}>
-            <Leaderboard 
-                topUsers={topUsers} 
+            <Leaderboard
+                topUsers={topUsers}
                 currentUser={{
-                    email: userData.email, 
+                    email: userData.email,
                     numRaffleEntries: userData.numRaffleEntries
                 }}
                 currentUserRank={currentUserRank}
-                />
-            <UserStats 
+            />
+            <UserStats
                 surveysCompleted={userData.surveysCompleted}
                 numRaffleEntries={userData.numRaffleEntries}
             />
@@ -270,8 +272,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                                 </Form.Group>
                             </>
                         )}
-
-                        <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%', backgroundColor: '#2d3748' }}>
+                        <Button className={styles.submitButton} variant="dark" type="submit">
                             Submit
                         </Button>
                     </Form>

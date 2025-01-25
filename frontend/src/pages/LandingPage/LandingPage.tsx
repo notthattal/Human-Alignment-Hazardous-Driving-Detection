@@ -150,7 +150,7 @@ const LandingPage: React.FC = () => {
                             style={{ fontSize: '22px', color: '#2d3748' }}
                         ></i> icon in the top-right corner of your screen.</p>
                         <p className={styles.description}>
-                            Each survey takes approximately 45 seconds to 1 minute and 30 seconds to complete.
+                            Each survey takes approximately <b>30-45 seconds</b> to complete.
                         </p>
                         <p className={styles.description}>
                             Thank you for participating in the <b>Human-Aligned Hazardous Dectection Survey</b>. Your contributions are
@@ -220,7 +220,6 @@ const LandingPage: React.FC = () => {
 
                 {/* Next Button */}
                 <Button
-                    variant="primary"
                     disabled={activeStep === steps.length - 1}
                     onClick={handleNext}
                     className={styles.nextButton}
