@@ -16,7 +16,7 @@ const formSchema = new mongoose.Schema({
     noDetectionReason: String,
     detectionConfidence: Number,
     hazardSeverity: Number,
-    attentionFactor: [{ type: String }],
+    attentionFactors: [{ type: String }],
     spacebarTimestamps: [{ type: Number }],
     startTime: Number,
     endTime: Number,
