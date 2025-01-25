@@ -195,7 +195,7 @@ const SignInPage: React.FC = () => {
                             </div>
                         </div>
                         <Form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px', color: '#4a5568' }}>
-                            <Form.Group className="mb-4" controlId="formGridEmail">
+                            <Form.Group className={styles.formInput} controlId="formGridEmail">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="email"
@@ -207,7 +207,7 @@ const SignInPage: React.FC = () => {
                                 />
                             </Form.Group>
 
-                            <Form.Group className="mb-4" controlId="formGridPassword">
+                            <Form.Group className={styles.formInput} controlId="formGridPassword">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control
                                     type="password"
@@ -236,55 +236,55 @@ const SignInPage: React.FC = () => {
                 </Col>
 
                 {/* Second Column */}
-                <Col md={6} className={styles.celebrationContainer}> 
-                        <div className={styles.celebrationSvg}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                                {/* Popper Base */}
-                                <path d="M60 140 L80 120 L90 130 L70 150Z" fill="#FFB02E" />
+                <Col md={6} className={styles.celebrationContainer}>
+                    <div className={styles.celebrationSvg}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                            {/* Popper Base */}
+                            <path d="M60 140 L80 120 L90 130 L70 150Z" fill="#FFB02E" />
 
-                                {/* Streamers */}
-                                <g>
-                                    <path d="M90 120 Q120 80 150 70" stroke="#FF3B30" fill="none" strokeWidth="4" />
-                                    <path d="M85 115 Q100 70 130 50" stroke="#FF9500" fill="none" strokeWidth="4" />
-                                    <path d="M95 125 Q140 90 160 85" stroke="#FFCD00" fill="none" strokeWidth="4" />
-                                    <path d="M80 110 Q90 60 110 40" stroke="#34C759" fill="none" strokeWidth="4" />
-                                    <path d="M100 130 Q150 100 170 100" stroke="#AF52DE" fill="none" strokeWidth="4" />
-                                </g>
+                            {/* Streamers */}
+                            <g>
+                                <path d="M90 120 Q120 80 150 70" stroke="#FF3B30" fill="none" strokeWidth="4" />
+                                <path d="M85 115 Q100 70 130 50" stroke="#FF9500" fill="none" strokeWidth="4" />
+                                <path d="M95 125 Q140 90 160 85" stroke="#FFCD00" fill="none" strokeWidth="4" />
+                                <path d="M80 110 Q90 60 110 40" stroke="#34C759" fill="none" strokeWidth="4" />
+                                <path d="M100 130 Q150 100 170 100" stroke="#AF52DE" fill="none" strokeWidth="4" />
+                            </g>
 
-                                {/* Confetti */}
-                                <g>
-                                    <rect x="120" y="60" width="8" height="8" fill="#FF3B30" transform="rotate(30 124 64)" />
-                                    <rect x="140" y="90" width="8" height="8" fill="#FF9500" transform="rotate(45 144 94)" />
-                                    <rect x="100" y="50" width="8" height="8" fill="#FFCD00" transform="rotate(15 104 54)" />
-                                    <rect x="130" y="70" width="8" height="8" fill="#34C759" transform="rotate(60 134 74)" />
-                                    <rect x="150" y="80" width="8" height="8" fill="#AF52DE" transform="rotate(75 154 84)" />
+                            {/* Confetti */}
+                            <g>
+                                <rect x="120" y="60" width="8" height="8" fill="#FF3B30" transform="rotate(30 124 64)" />
+                                <rect x="140" y="90" width="8" height="8" fill="#FF9500" transform="rotate(45 144 94)" />
+                                <rect x="100" y="50" width="8" height="8" fill="#FFCD00" transform="rotate(15 104 54)" />
+                                <rect x="130" y="70" width="8" height="8" fill="#34C759" transform="rotate(60 134 74)" />
+                                <rect x="150" y="80" width="8" height="8" fill="#AF52DE" transform="rotate(75 154 84)" />
 
-                                    <path d="M110 70 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FF3B30" />
-                                    <path d="M145 65 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FFCD00" />
-                                    <path d="M160 95 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#34C759" />
-                                </g>
+                                <path d="M110 70 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FF3B30" />
+                                <path d="M145 65 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#FFCD00" />
+                                <path d="M160 95 l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#34C759" />
+                            </g>
 
-                                {/* Sparkles */}
-                                <g fill="#FFD700">
-                                    <circle cx="115" cy="45" r="2" />
-                                    <circle cx="165" cy="85" r="2" />
-                                    <circle cx="135" cy="95" r="2" />
-                                    <circle cx="145" cy="45" r="2" />
-                                </g>
-                            </svg>
-                        </div>
-                        <div className={styles.celebrationText}>
-                            <h2 className={styles.celebrationHeading}>After Registering</h2>
-                            <p className={styles.celebrationSubtext}>
-                                You'll Receive<br />
-                                <span className={styles.highlightText}>5 Entries</span><br />
-                                Towards a <span className={styles.prizeText}>$100</span> Raffle!
-                            </p>
-                            <p className={styles.additionalText} style={{ fontStyle: 'italic' }}>
-                                <span className={styles.additionalHighlight}>+ 1 entry</span> for every survey completed
-                            </p>
-                        </div>
-                        <TermsOfService />
+                            {/* Sparkles */}
+                            <g fill="#FFD700">
+                                <circle cx="115" cy="45" r="2" />
+                                <circle cx="165" cy="85" r="2" />
+                                <circle cx="135" cy="95" r="2" />
+                                <circle cx="145" cy="45" r="2" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div className={styles.celebrationText}>
+                        <h2 className={styles.celebrationHeading}>After Registering</h2>
+                        <p className={styles.celebrationSubtext}>
+                            You'll Receive<br />
+                            <span className={styles.highlightText}>5 Entries</span><br />
+                            Towards a <span className={styles.prizeText}>$100</span> Raffle!
+                        </p>
+                        <p className={styles.additionalText} style={{ fontStyle: 'italic' }}>
+                            <span className={styles.additionalHighlight}>+ 1 entry</span> for every survey completed
+                        </p>
+                    </div>
+                    <TermsOfService />
                 </Col>
             </Row>
         </Container>
