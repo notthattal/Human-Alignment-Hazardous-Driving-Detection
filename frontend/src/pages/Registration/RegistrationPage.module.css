@@ -38,9 +38,8 @@
     flex-direction: column;
     background-color: white;
     margin: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 
-    0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    box-shadow: 5px 5px 10px 10px rgba(0, 1, 0, 0.1);
 }
 
 .buttonGroup {
@@ -48,4 +47,62 @@
     flex-direction: row;
     gap: 20px;
     margin-bottom: 35px;
+}
+
+.screenWarning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.screenWarning h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #f8d210;
+}
+
+.screenWarning p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #e4e4e4;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.floatingIcon {
+    font-size: 10vw;
+    color: #f8d210;
+    animation: floating 3s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;
+}
+
+/* Floating animation */
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Glow effect animation */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(248, 210, 16, 0.5);
+    }
+    to {
+        text-shadow: 0 0 10px #f8d210;
+    }
 }

@@ -9,7 +9,7 @@ import UserStats from "../../components/UserStats/UserStats";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 import axios from "axios";
 
-const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
+const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps, startTime, endTime }) => {
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
     const [userData, setUserData] = useState({
@@ -57,7 +57,9 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
         detectionConfidence: 0,
         hazardSeverity: 0,
         attentionFactors: [] as string[],
-        spacebarTimestamps: spacebarTimestamps || []
+        spacebarTimestamps: spacebarTimestamps || [],
+        startTime: startTime || 0,
+        endTime: endTime || 0
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -90,6 +92,8 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                 formData: formData,
                 numSurveysCompleted: updatedUser.surveysCompleted
             }
+            console.log('END TIME MINUS START TIME', formData.endTime - formData.startTime)
+            console.log('RESULTS', results)
 
             try {
                 await postResults(results)
@@ -150,7 +154,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                     Post-Simulation Survey
                 </div>
                 <div className={styles.content}>
-                    <p className="mb-2 fst-italic">Please complete the following assessment regarding the driving scenario you just observed. Upon submission, you will be presented with a new driving scenario to evaluate.</p>
+                    <p className="mb-2 fst-italic"><span style={{ color: 'red' }}>*</span> Please complete the following assessment regarding the driving scenario you just observed. Upon submission, you will be presented with a new driving scenario to evaluate.</p>
                 </div>
                 <div>
                     <Form onSubmit={handleSubmit}>
