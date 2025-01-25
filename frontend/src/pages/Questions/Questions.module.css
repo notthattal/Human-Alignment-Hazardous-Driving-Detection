@@ -3,41 +3,100 @@
     font-family: 'Roboto', sans-serif;
     text-align: center;
     font-weight: 700;
-}
-
-.content {
+    color: #2d3748;
+    margin-bottom: 10px;
+  }
+  
+  .content {
     font-family: 'Roboto', sans-serif;
-    text-align: center;
-}
-
-.confirmPasswordWarning {
+    text-align: left;
+    color: #4a5568;
+    margin-bottom: 20px;
+  }
+  
+  .confirmPasswordWarning {
     font-family: 'Roboto', sans-serif;
     color: red;
     font-size: 12px;
     margin-left: 3px;
     margin-top: 5px;
-}
-
-.container {
+  }
+  
+  .container {
     max-width: 100vw;
     width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin: 25px;
-}
-
-.containerWrapper {
-    max-width: 100vw;
+    padding: 20px;
+    background-color: #f7fafc;
+    overflow-y: auto;
+  }
+  
+  .containerWrapper {
     width: 40%;
     display: flex;
     flex-direction: column;
-    gap: 50px;
-}
-
-.buttonGroup {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+  }
+  
+  .buttonGroup {
     display: flex;
     flex-direction: row;
     gap: 20px;
-}
+  }
+  
+  /* Form styling */
+  .containerWrapper :global(.form-group) {
+    margin-bottom: 15px;
+  }
+  
+  .containerWrapper :global(.form-label) {
+    font-weight: 500;
+    color: #2d3748;
+    margin-bottom: 5px;
+  }
+  
+  .containerWrapper :global(.form-control),
+  .containerWrapper :global(.form-select) {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 12px;
+  }
+  
+  .containerWrapper :global(.btn-dark) {
+    background-color: #2d3748;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 1024px) {
+    .containerWrapper {
+      width: 60%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .containerWrapper {
+      width: 80%;
+      padding: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .containerWrapper {
+      width: 95%;
+      padding: 15px;
+    }
+    
+    .title {
+      font-size: 28px;
+    }
+  }

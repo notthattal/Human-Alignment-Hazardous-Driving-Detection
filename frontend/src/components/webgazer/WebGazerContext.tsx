@@ -4,31 +4,27 @@ import { GazeData } from "../../utils/types";
 
 export const WebGazerContext = createContext<WebGazerContextType | null>(null);
 
-export const WebGazerProvider = ({children}: {children: ReactNode}) => {
+export const WebGazerProvider = ({ children }: { children: ReactNode }) => {
   const [isCalibrated, setIsCalibrated] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [gazeData, setGazeData] = useState<GazeData[]>([]);
   const [finalGazeData, setFinalGazeData] = useState<GazeData[]>([]);
-  
+
   const webgazerInstance = useRef<any>(null);
   const lastLogTime = useRef<number>(0);
-  const LOGGING_INTERVAL = 200;
 
   const logGazeData = (data: GazeData) => {
     const currentTime = Date.now();
-    
-    if (currentTime - lastLogTime.current >= LOGGING_INTERVAL) {
-      console.log(currentTime - lastLogTime.current, 'INTERVAL LENGTH')
-      const timestampedData = {
-        ...data,
-        timestamp: currentTime,
-      };
-      
-      setGazeData(prev => [...prev, timestampedData]);
-      lastLogTime.current = currentTime;
-    }
+
+    const timestampedData = {
+      ...data,
+      timestamp: currentTime,
+    };
+
+    setGazeData(prev => [...prev, timestampedData]);
+    lastLogTime.current = currentTime;
   };
-  
+
   const startWebGazer = async () => {
     if (!window.webgazer) {
       throw new Error('WebGazer.js is not loaded.')
@@ -37,7 +33,7 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
     try {
       setGazeData([]);
       console.log('WebGazer starting...', new Date().toLocaleTimeString());
-      
+
       lastLogTime.current = Date.now();
 
       webgazerInstance.current = await window.webgazer
@@ -50,7 +46,7 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
         .showVideoPreview(false)
         .showPredictionPoints(false)
         .begin();
-      
+
       setIsInitialized(true);
     } catch (error) {
       console.error('Error initializing WebGazer:', error);
@@ -60,9 +56,9 @@ export const WebGazerProvider = ({children}: {children: ReactNode}) => {
 
   const stopWebGazer = () => {
     if (webgazerInstance.current) {
+      console.log('WebGazer shutting down...');
 
       setFinalGazeData(gazeData);
-      
       window.webgazer.end();
       setIsInitialized(false);
       setGazeData([]);

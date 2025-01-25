@@ -1,0 +1,202 @@
+.stepContent {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.stepTitle {
+  font-size: 2vw; 
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.4vw; 
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: left;
+  color: #4a5568;
+}
+
+.button {
+  margin-top: 10px;
+  padding: 18px 38px 18px 38px;
+  background-color: #2d3748;
+}
+
+.button:hover {
+  transition: 0.5s;
+  background-color: red;
+  border: 0.2px solid red;
+  color: white;
+}
+
+.video {
+  width: 100%;
+  max-height: 100vh;
+  object-fit: contain; 
+  border: 2px solid #2d3748;
+  border-radius: 25px;
+}
+
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.finalSlide {
+  padding-bottom: 20px;
+}
+
+.container {
+  padding: 20px;
+  position: relative;
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stepContent {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.container {
+  padding: 45px;
+  position: relative;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.contentWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 25px; 
+  padding: 20px; 
+}
+
+.backButton,
+.nextButton {
+  position: fixed;
+  top: 55%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  z-index: 10;
+  border: none;
+  cursor: pointer;
+  padding: 15px 35px 15px 35px;
+}
+
+.backButton {
+  left: 145px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.nextButton {
+  right: 145px;
+  background-color: #2d3748;
+  color: white;
+}
+
+.nextButton:hover {
+  background-color: #FFD700;
+  transition: 0.4s;
+}
+
+.backButton:disabled,
+.nextButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.backButton i {
+  font-size: 2rem; 
+}
+
+.nextButton i {
+  font-size: 2rem; 
+}
+
+.backButton i, .nextButton i {
+  font-size: 2rem; 
+  line-height: 1; 
+}
+
+.keyboardContainer {
+  position: absolute;
+  bottom: 10%;
+  left: calc(50% - 380px);
+  width: 250px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.keyboard {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .stepTitle {
+    font-size: 5vw;
+  }
+
+  .description {
+    font-size: 4vw;
+  }
+
+  .button {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepTitle {
+    font-size: 6vw;
+  }
+
+  .description {
+    font-size: 5vw;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contentWrapper {
+    padding: 10px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .video {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .description {
+    font-size: 14px;
+  }
+}

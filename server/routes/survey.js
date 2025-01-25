@@ -1,14 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const SurveyResult = require('../models/survey')
+const SurveyResult = require('../models/survey');
+const User = require('../models/user');
+
+router.get('/top-raffle-entries', async (req, res) => {
+    try {
+        const currentUserEmail = req.query.currentUserEmail;
+        const currentUser = await User.findOne({ email: currentUserEmail });
+
+        const topUsers = await User.find()
+            .sort({ numRaffleEntries: -1 })
+            .limit(4)
+            .select('email numRaffleEntries');
+        
+        // Find the current user's rank
+        const currentUserRank = await User.countDocuments({ numRaffleEntries: { $gt: currentUserEmail.numRaffleEntries } }) + 1;
+        res.json({ topUsers, currentUserRank, currentUser});
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching top users' });
+    }
+});
 
 router.post('/results', async (req, res) => {
 
-    console.log(req.body)
+    console.log("Survey Results:", req.body)
 
     try {
         const body = req.body;
-        const { userId, videoId, gaze, formData } = body;
+        const { userId, videoId, gaze, formData, numSurveysCompleted } = body;
 
         const cleanedGazeData = gaze.map(entry => ({
             time: entry.timestamp,
@@ -22,8 +41,18 @@ router.post('/results', async (req, res) => {
             gaze: cleanedGazeData,
             formData: formData
         })
+        
+        await User.findOneAndUpdate(
+            {email: userId}, 
+            {
+              $set: { numSurveysFilled: numSurveysCompleted },
+              $inc: { numRaffleEntries: 1}
+            },
+            { new: true }
+        );
+        
 
-        res.status(201).json({ message: 'Survey result saved successfully'});
+        res.status(201).json({ message: 'Survey result saved successfully; User data updated'});
     } catch (err) {
 
         console.log('An error has occurred while saving results', err)
