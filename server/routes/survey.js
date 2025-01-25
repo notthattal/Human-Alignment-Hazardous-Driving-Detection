@@ -10,11 +10,11 @@ router.get('/top-raffle-entries', async (req, res) => {
 
         const topUsers = await User.find()
             .sort({ numRaffleEntries: -1 })
-            .limit(4)
+            .limit(5)
             .select('email numRaffleEntries');
         
         // Find the current user's rank
-        const currentUserRank = await User.countDocuments({ numRaffleEntries: { $gt: currentUserEmail.numRaffleEntries } }) + 1;
+        const currentUserRank = await User.countDocuments({ numRaffleEntries: { $gt: currentUser.numRaffleEntries } }) + 1;
         res.json({ topUsers, currentUserRank, currentUser});
     } catch (error) {
         res.status(500).json({ message: 'Error fetching top users' });
@@ -23,11 +23,9 @@ router.get('/top-raffle-entries', async (req, res) => {
 
 router.post('/results', async (req, res) => {
 
-    console.log("Survey Results:", req.body)
-
     try {
         const body = req.body;
-        const { userId, videoId, gaze, formData, numSurveysCompleted } = body;
+        const { userId, videoId, gaze, windowDimensions, formData, numSurveysCompleted } = body;
 
         const cleanedGazeData = gaze.map(entry => ({
             time: entry.timestamp,
@@ -38,6 +36,7 @@ router.post('/results', async (req, res) => {
         await SurveyResult.create({
             userId: userId,
             videoId: videoId,
+            windowDimensions, windowDimensions,
             gaze: cleanedGazeData,
             formData: formData
         })

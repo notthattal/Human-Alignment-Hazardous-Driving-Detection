@@ -76,7 +76,7 @@ const LandingPage: React.FC = () => {
                                 muted
                                 playsInline
                             />
-                            <div className={styles.keyboardContainer}>
+                            {/* <div className={styles.keyboardContainer}>
                                 <svg viewBox="0 0 400 200" className={styles.keyboard}>
                                     <rect x="50" y="40" width="300" height="120" rx="10" fill="#2f3640" filter="url(#shadow)" />
                                     <g fill="#3f4853">
@@ -115,7 +115,7 @@ const LandingPage: React.FC = () => {
                                         Press the Space Bar when you spot a hazard
                                     </text>
                                 </svg>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 );
@@ -150,7 +150,7 @@ const LandingPage: React.FC = () => {
                             style={{ fontSize: '22px', color: '#2d3748' }}
                         ></i> icon in the top-right corner of your screen.</p>
                         <p className={styles.description}>
-                            Each survey takes approximately 45 seconds to 1 minute and 30 seconds to complete.
+                            Each survey takes approximately <b>30-45 seconds</b> to complete.
                         </p>
                         <p className={styles.description}>
                             Thank you for participating in the <b>Human-Aligned Hazardous Dectection Survey</b>. Your contributions are
@@ -220,7 +220,6 @@ const LandingPage: React.FC = () => {
 
                 {/* Next Button */}
                 <Button
-                    variant="primary"
                     disabled={activeStep === steps.length - 1}
                     onClick={handleNext}
                     className={styles.nextButton}
