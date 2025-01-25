@@ -63,7 +63,41 @@ const LandingPage: React.FC = () => {
                     <div className={styles.content}>
                         <p className={styles.description}>
                             After calibrating the eye tracker, you will watch a driving video.
-                            Stay seated and <b>press the spacebar</b> to start recording a
+                            Stay seated and <b>press the spacebar</b> <svg viewBox="0 0 400 200" className={styles.keyboard}>
+                                <rect x="50" y="40" width="300" height="120" rx="10" fill="#2f3640" filter="url(#shadow)" />
+                                <g fill="#3f4853">
+                                    <rect x="70" y="55" width="30" height="30" rx="4" />
+                                    <rect x="105" y="55" width="30" height="30" rx="4" />
+                                    <rect x="140" y="55" width="30" height="30" rx="4" />
+                                    <rect x="175" y="55" width="30" height="30" rx="4" />
+                                    <rect x="210" y="55" width="30" height="30" rx="4" />
+                                    <rect x="245" y="55" width="30" height="30" rx="4" />
+                                    <rect x="280" y="55" width="30" height="30" rx="4" />
+                                </g>
+                                <g className="spacebar">
+                                    <rect x="100" y="100" width="200" height="40" rx="4" fill="#3f4853">
+                                        <animate
+                                            attributeName="y"
+                                            values="100;105;100"
+                                            dur="2s"
+                                            repeatCount="indefinite"
+                                            begin="0s"
+                                        />
+                                        <animate
+                                            attributeName="fill"
+                                            values="#3f4853;#2d3436;#3f4853"
+                                            dur="2s"
+                                            repeatCount="indefinite"
+                                            begin="0s"
+                                        />
+                                    </rect>
+                                </g>
+                                <defs>
+                                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.3" />
+                                    </filter>
+                                </defs>
+                            </svg>to start recording a
                             potential hazard, then <b>press it again</b> when the hazard is no
                             longer present.
                         </p>
@@ -76,46 +110,6 @@ const LandingPage: React.FC = () => {
                                 muted
                                 playsInline
                             />
-                            {/* <div className={styles.keyboardContainer}>
-                                <svg viewBox="0 0 400 200" className={styles.keyboard}>
-                                    <rect x="50" y="40" width="300" height="120" rx="10" fill="#2f3640" filter="url(#shadow)" />
-                                    <g fill="#3f4853">
-                                        <rect x="70" y="55" width="30" height="30" rx="4" />
-                                        <rect x="105" y="55" width="30" height="30" rx="4" />
-                                        <rect x="140" y="55" width="30" height="30" rx="4" />
-                                        <rect x="175" y="55" width="30" height="30" rx="4" />
-                                        <rect x="210" y="55" width="30" height="30" rx="4" />
-                                        <rect x="245" y="55" width="30" height="30" rx="4" />
-                                        <rect x="280" y="55" width="30" height="30" rx="4" />
-                                    </g>
-                                    <g className="spacebar">
-                                        <rect x="100" y="100" width="200" height="40" rx="4" fill="#3f4853">
-                                            <animate
-                                                attributeName="y"
-                                                values="100;105;100"
-                                                dur="2s"
-                                                repeatCount="indefinite"
-                                                begin="0s"
-                                            />
-                                            <animate
-                                                attributeName="fill"
-                                                values="#3f4853;#2d3436;#3f4853"
-                                                dur="2s"
-                                                repeatCount="indefinite"
-                                                begin="0s"
-                                            />
-                                        </rect>
-                                    </g>
-                                    <defs>
-                                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                                            <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.3" />
-                                        </filter>
-                                    </defs>
-                                    <text x="200" y="190" textAnchor="middle" fill="#2d3748" fontSize="18" fontFamily="Roboto, sans-serif" fontWeight="600">
-                                        Press the Space Bar when you spot a hazard
-                                    </text>
-                                </svg>
-                            </div> */}
                         </div>
                     </div>
                 );

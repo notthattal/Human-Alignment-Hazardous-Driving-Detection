@@ -104,6 +104,11 @@
   color: white;
 }
 
+.keyboard {
+  width: 10%;
+  height: auto;
+}
+
 @media screen and (max-width: 1300px) {
   .contentWrapper {
     min-height: 80vh;
@@ -187,11 +192,6 @@
     font-size: clamp(12px, 1.2vw, 18px);
     margin-bottom: 10px;
   }
-
-  .keyboardContainer {
-    max-width: 90%;
-    margin: 5px 0;
-  }
   
   .video {
     width: 900px;
@@ -212,6 +212,20 @@
   }
 }
 
+@media screen and (max-height: 690px) {
+  .video {
+    width: 500px;
+  }
+
+  .stepContent {
+    width: 500px
+  }
+
+  .description {
+    font-size: 12px;
+  }
+}
+
 @media screen and (max-width: 480px) {
   .container {
     padding: 5px;
@@ -224,10 +238,6 @@
 
   .description {
     font-size: 12px;
-  }
-
-  .keyboardContainer {
-    max-width: 250px;
   }
 
   .backButton,
