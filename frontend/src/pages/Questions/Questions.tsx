@@ -92,9 +92,15 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                 numRaffleEntries: updatedUser.numRaffleEntries
             });
 
+            const windowDimensions = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+
             const results = {
                 userId: userId,
                 videoId: videoId,
+                windowDimensions: windowDimensions,
                 gaze: finalGazeData,
                 formData: formData,
                 numSurveysCompleted: updatedUser.surveysCompleted

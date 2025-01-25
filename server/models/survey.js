@@ -6,6 +6,11 @@ const gazeSchema = new mongoose.Schema({
     time: { type: Number, required: true }
 });
 
+const windowDimensions = new mongoose.Schema({
+    width: { type: Number, required: true },
+    height: { type: Number, required: true} 
+});
+
 const formSchema = new mongoose.Schema({
     hazardDetected: Boolean,
     noDetectionReason: String,
@@ -20,6 +25,7 @@ const formSchema = new mongoose.Schema({
 const resultSchema = new mongoose.Schema({
     userId: String,
     videoId: String,
+    windowDimensions: windowDimensions,
     gaze: { type: [gazeSchema] },
     formData: formSchema
 });

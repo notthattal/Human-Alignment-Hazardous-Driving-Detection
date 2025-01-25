@@ -25,7 +25,7 @@ router.post('/results', async (req, res) => {
 
     try {
         const body = req.body;
-        const { userId, videoId, gaze, formData, numSurveysCompleted } = body;
+        const { userId, videoId, gaze, windowDimensions, formData, numSurveysCompleted } = body;
 
         const cleanedGazeData = gaze.map(entry => ({
             time: entry.timestamp,
@@ -36,6 +36,7 @@ router.post('/results', async (req, res) => {
         await SurveyResult.create({
             userId: userId,
             videoId: videoId,
+            windowDimensions, windowDimensions,
             gaze: cleanedGazeData,
             formData: formData
         })
