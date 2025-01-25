@@ -2,11 +2,11 @@
   position: absolute;
   top: 120px;
   left: 20px;
-  background-color: #f5f5f5;
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 380px;
+  margin-top: 25px;
 }
 
 .leaderboardTitle {
@@ -14,6 +14,7 @@
   font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
+  color: #2d3748;
 }
 
 .leaderboardTable {
@@ -26,6 +27,7 @@
 .leaderboardTable td {
   padding: 8px;
   border-bottom: 1px solid #ddd;
+  color: #4a5568;
 }
 
 .leaderboardTable th {
@@ -40,4 +42,18 @@
 .currentUserRow {
   background-color: #e0f0ff;
   font-weight: 600;
+}
+
+@media screen and (max-width: 1400px) {
+  .leaderboardContainer {
+    position: absolute;
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .leaderboardContainer {
+    position: absolute;
+    width: 325px;
+  }
 }
