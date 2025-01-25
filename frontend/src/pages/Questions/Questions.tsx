@@ -120,29 +120,30 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
 
-        let updatedValue: any;
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
-            const currentFactors = [...(formData.attentionFactors || [])];
 
-            if (checked) {
-                currentFactors.push(value);
-            } else {
-                const index = currentFactors.indexOf(value);
-                if (index > -1) {
-                    currentFactors.splice(index, 1);
+            setFormData(prevState => {
+                const currentFactors = prevState.attentionFactors || [];
+
+                if (checked) {
+                    return {
+                        ...prevState,
+                        [name]: [...currentFactors, value]
+                    };
+                } else {
+                    return {
+                        ...prevState,
+                        [name]: currentFactors.filter(factor => factor !== value)
+                    };
                 }
-            }
-
-            updatedValue = currentFactors;
+            });
         } else {
-            updatedValue = value;
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
         }
-
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: updatedValue,
-        }));
     };
 
     return (
@@ -265,6 +266,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                                         { label: 'Movement', value: 'motion' },
                                         { label: 'Speed', value: 'velocity' },
                                         { label: 'Proximity to another vehicle', value: 'proximity' },
+                                        { label: 'Pedestrian', value: 'pedestrian' },
                                         { label: 'Environmental Conditions', value: 'environment' },
                                         { label: 'Road Work (Construction)', value: 'construction' },
                                         { label: 'Other', value: 'other' }
