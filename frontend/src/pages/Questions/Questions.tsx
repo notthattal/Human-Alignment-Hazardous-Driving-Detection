@@ -4,10 +4,9 @@ import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
-import useSignOut from "../../hooks/useSignOut";
+import Profile from "../../components/Profile/Profile";
 
-const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
-    const { signOut } = useSignOut();
+const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
 
@@ -16,7 +15,8 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         noDetectionReason: '',
         detectionConfidence: 0,
         hazardSeverity: 0,
-        attentionFactors: [] as string[]
+        attentionFactors: [] as string[],
+        spacebarTimestamps: spacebarTimestamps || []
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -30,6 +30,10 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         if (userItem) {
             const user = JSON.parse(userItem)
             const userId = user.email
+
+            // Update Survey Completion Count in Local Storage
+            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1}
+            localStorage.setItem('user', JSON.stringify(updatedUser))
 
             const results = {
                 userId: userId,
@@ -77,19 +81,9 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
         }));
     };
 
-    const handleEndSurvey = () => {
-        signOut();
-    }
-
     return (
         <div className={styles.container}>
-            <Button
-                variant="danger"
-                className="position-absolute top-0 end-0 m-2"
-                onClick={handleEndSurvey}
-            >
-                End Survey
-            </Button>
+            <Profile />
             <div className={styles.containerWrapper}>
                 <div className={styles.title}>
                     Post-Simulation Survey
@@ -100,7 +94,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                 <div>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className='mb-4'>
-                            <Form.Label>Did you press the spacebar when you detected a hazardous instance?</Form.Label>
+                            <Form.Label>Did you press the <b>spacebar</b> when you detected a hazardous instance?</Form.Label>
                             <div>
                                 <Form.Check
                                     type="radio"
@@ -125,7 +119,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                         {formData.hazardDetected === 'no' && (
                             <>
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>If you did not press the spacebar during the video, why do you think no hazards were present?</Form.Label>
+                                    <Form.Label>If you did <b>NOT</b> press the spacebar during the video, why do you think <b>no hazards</b> were present?</Form.Label>
                                     <Form.Select
                                         name="noDetectionReason"
                                         value={formData.noDetectionReason}
@@ -140,7 +134,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                                 </Form.Group>
 
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how confident are you that the situation was not hazardous?</Form.Label>
+                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how <b>confident</b> are you that the situation was <b>not hazardous?</b></Form.Label>
                                     <Form.Select
                                         name="detectionConfidence"
                                         value={formData.detectionConfidence}
@@ -159,7 +153,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                         {formData.hazardDetected === 'yes' && (
                             <>
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>On a scale of 1 to 5, how dangerous was the situation? (1 = No harm possible, 5 = Life-threatening or fatal)</Form.Label>
+                                    <Form.Label>On a scale of 1 to 5, how <b>dangerous</b> was the situation? (1 = No harm possible, 5 = Life-threatening or fatal)</Form.Label>
                                     <Form.Select
                                         name="hazardSeverity"
                                         value={formData.hazardSeverity}
@@ -174,7 +168,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                                 </Form.Group>
 
                                 <Form.Group className='mb-4'>
-                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how confident are you that the hazard(s) you identified were genuinely dangerous?</Form.Label>
+                                    <Form.Label>On a scale from 1 (not at all) to 5 (very), how <b>confident</b> are you that the hazard(s) you identified were <b>genuinely dangerous</b>?</Form.Label>
                                     <Form.Select
                                         name="detectionConfidence"
                                         value={formData.detectionConfidence}
@@ -193,9 +187,9 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId }) => {
                                     {[
                                         { label: 'Movement', value: 'motion' },
                                         { label: 'Speed', value: 'velocity' },
-                                        { label: 'Proximity to the vehicle', value: 'proximity' },
-                                        { label: 'Environmental conditions', value: 'environment' },
-                                        { label: 'Unusual behavior', value: 'anomaly' },
+                                        { label: 'Proximity to another vehicle', value: 'proximity' },
+                                        { label: 'Environmental Conditions', value: 'environment' },
+                                        { label: 'Road Work (Construction)', value: 'construction' },
                                         { label: 'Other', value: 'other' }
                                     ].map((factor) => (
                                         <Form.Check

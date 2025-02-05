@@ -34,10 +34,12 @@ export interface VideoData {
 export interface VideoPlayerProps {
     onVideoComplete?: () => void;
     passVideoId: (id: string) => void;
+    passSpacebarTimestamps: (timestamp: number[]) => void;
 }
 
 export interface QuestionsProps {
     videoId: string,
+    spacebarTimestamps: number[];
     onFormSumbitted?: () => void;
 }
 
@@ -47,6 +49,7 @@ export interface QuestionsFormData {
     detectionConfidence: number;    
     hazardSeverity: number;         
     attentionFactors: string[];
+    spacebarTimestamps: number[];
 }
 
 export interface SurveyResults {

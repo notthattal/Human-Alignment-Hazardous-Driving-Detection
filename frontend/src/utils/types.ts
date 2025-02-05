@@ -6,11 +6,9 @@ export type RegistrationFormData = {
     licenseAge: string,
     age: number,
     ethnicity: string,
-    carMakeModel: string,
     gender: string,
-    speedingTicket: boolean,
-    dui: boolean,
-    visuallyImpaired: boolean
+    visuallyImpaired: boolean,
+    referredByUser: string
 }
 
 export type SignInFormData = {
