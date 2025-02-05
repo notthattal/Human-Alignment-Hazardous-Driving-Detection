@@ -1,14 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QuestionsFormData, QuestionsProps } from "../../utils/interfaces";
 import { Button, Form } from "react-bootstrap";
 import styles from './Questions.module.css'
 import { useWebGazer } from "../../hooks/useWebGazer";
 import usePostResults from "../../hooks/usePostResults";
 import Profile from "../../components/Profile/Profile";
+import UserStats from "../../components/UserStats/UserStats";
+import Leaderboard from "../../components/Leaderboard/Leaderboard";
+import axios from "axios";
 
-const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps }) => {
+const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spacebarTimestamps, startTime, endTime }) => {
     const { finalGazeData, resetFinalGazeData } = useWebGazer();
     const { postResults } = usePostResults();
+    const [userData, setUserData] = useState({
+        email: '',
+        surveysCompleted: 0,
+        numRaffleEntries: 0
+    });
+
+    const [topUsers, setTopUsers] = useState<Array<{ email: string, numRaffleEntries: number }>>([]);
+    const [currentUserRank, setCurrentUserRank] = useState<number>(0);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    useEffect(() => {
+        const fetchTopUsers = async () => {
+            try {
+                const userItem = localStorage.getItem('user');
+                if (userItem) {
+                    const user = JSON.parse(userItem);
+
+                    const response = await axios.get('http://localhost:3001/survey/top-raffle-entries', {
+                        params: {
+                            currentUserEmail: user.email
+                        }
+                    });
+                    setTopUsers(response.data.topUsers);
+                    setCurrentUserRank(response.data.currentUserRank);
+                }
+            } catch (error) {
+                console.error('Failed to fetch top users', error);
+            }
+        };
+
+        const userItem = localStorage.getItem('user');
+
+        if (userItem) {
+            const user = JSON.parse(userItem);
+            setUserData({
+                email: user.email,
+                surveysCompleted: user.surveysCompleted,
+                numRaffleEntries: user.numRaffleEntries
+            });
+            fetchTopUsers();
+        }
+    }, []);
+
 
     const [formData, setFormData] = useState<QuestionsFormData>({
         hazardDetected: '',
@@ -16,13 +62,17 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
         detectionConfidence: 0,
         hazardSeverity: 0,
         attentionFactors: [] as string[],
-        spacebarTimestamps: spacebarTimestamps || []
+        spacebarTimestamps: spacebarTimestamps || [],
+        startTime: startTime || 0,
+        endTime: endTime || 0
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (onFormSumbitted) {
             onFormSumbitted();
+            // Call-Back for Leaderboard Entry Animation
+            setFormSubmitted(true);
         }
 
         const userItem = localStorage.getItem('user')
@@ -32,14 +82,28 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
             const userId = user.email
 
             // Update Survey Completion Count in Local Storage
-            const updatedUser = {...user, surveysCompleted: user.surveysCompleted + 1}
+            const updatedUser = { ...user, surveysCompleted: user.surveysCompleted + 1, numRaffleEntries: user.numRaffleEntries + 1 }
             localStorage.setItem('user', JSON.stringify(updatedUser))
+
+            // Update local state
+            setUserData({
+                email: updatedUser.email,
+                surveysCompleted: updatedUser.surveysCompleted,
+                numRaffleEntries: updatedUser.numRaffleEntries
+            });
+
+            const windowDimensions = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
 
             const results = {
                 userId: userId,
                 videoId: videoId,
+                windowDimensions: windowDimensions,
                 gaze: finalGazeData,
-                formData: formData
+                formData: formData,
+                numSurveysCompleted: updatedUser.surveysCompleted
             }
 
             try {
@@ -56,40 +120,54 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
 
-        let updatedValue: any;
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
-            const currentFactors = [...(formData.attentionFactors || [])];
 
-            if (checked) {
-                currentFactors.push(value);
-            } else {
-                const index = currentFactors.indexOf(value);
-                if (index > -1) {
-                    currentFactors.splice(index, 1);
+            setFormData(prevState => {
+                const currentFactors = prevState.attentionFactors || [];
+
+                if (checked) {
+                    return {
+                        ...prevState,
+                        [name]: [...currentFactors, value]
+                    };
+                } else {
+                    return {
+                        ...prevState,
+                        [name]: currentFactors.filter(factor => factor !== value)
+                    };
                 }
-            }
-
-            updatedValue = currentFactors;
+            });
         } else {
-            updatedValue = value;
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
         }
-
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: updatedValue,
-        }));
     };
 
     return (
         <div className={styles.container}>
+            <Leaderboard
+                topUsers={topUsers}
+                currentUser={{
+                    email: userData.email,
+                    numRaffleEntries: userData.numRaffleEntries
+                }}
+                currentUserRank={currentUserRank}
+                formSubmitted={formSubmitted}
+            />
+            <UserStats
+                surveysCompleted={userData.surveysCompleted}
+                numRaffleEntries={userData.numRaffleEntries}
+            />
             <Profile />
             <div className={styles.containerWrapper}>
                 <div className={styles.title}>
                     Post-Simulation Survey
                 </div>
                 <div className={styles.content}>
-                    <p className="mb-2 fst-italic">Please complete the following assessment regarding the driving scenario you just observed. Upon submission, you will be presented with a new driving scenario to evaluate.</p>
+                    <p className="mb-2 fst-italic"><span style={{ color: 'red' }}>*</span> Please complete the following assessment regarding the driving scenario you just observed. Upon submission, you will be presented with a new driving scenario to evaluate.</p>
                 </div>
                 <div>
                     <Form onSubmit={handleSubmit}>
@@ -188,6 +266,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                                         { label: 'Movement', value: 'motion' },
                                         { label: 'Speed', value: 'velocity' },
                                         { label: 'Proximity to another vehicle', value: 'proximity' },
+                                        { label: 'Pedestrian', value: 'pedestrian' },
                                         { label: 'Environmental Conditions', value: 'environment' },
                                         { label: 'Road Work (Construction)', value: 'construction' },
                                         { label: 'Other', value: 'other' }
@@ -205,8 +284,7 @@ const Questions: React.FC<QuestionsProps> = ({ onFormSumbitted, videoId, spaceba
                                 </Form.Group>
                             </>
                         )}
-
-                        <Button className='mb-4' variant="dark" type="submit" style={{ width: '100%' }}>
+                        <Button className={styles.submitButton} variant="dark" type="submit">
                             Submit
                         </Button>
                     </Form>

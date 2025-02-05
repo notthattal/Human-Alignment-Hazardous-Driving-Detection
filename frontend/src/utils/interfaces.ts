@@ -34,12 +34,14 @@ export interface VideoData {
 export interface VideoPlayerProps {
     onVideoComplete?: () => void;
     passVideoId: (id: string) => void;
-    passSpacebarTimestamps: (timestamp: number[]) => void;
+    passFootageMetaData: (timestamp: number[], startTime: number, endTime: number) => void;
 }
 
 export interface QuestionsProps {
     videoId: string,
     spacebarTimestamps: number[];
+    startTime: number,
+    endTime: number,
     onFormSumbitted?: () => void;
 }
 
@@ -50,6 +52,8 @@ export interface QuestionsFormData {
     hazardSeverity: number;         
     attentionFactors: string[];
     spacebarTimestamps: number[];
+    startTime: number,
+    endTime: number
 }
 
 export interface SurveyResults {
@@ -58,3 +62,19 @@ export interface SurveyResults {
     gaze: GazeData[],
     formData: QuestionsFormData
 }
+
+export interface Country {
+    code: string;
+    name: string;
+}
+
+export interface ReferralCode {
+    code: string
+}
+
+export interface LeaderboardProps {
+    topUsers: Array<{ email: string, numRaffleEntries: number }>;
+    currentUser: { email: string, numRaffleEntries: number };
+    currentUserRank: number;
+    formSubmitted: boolean;
+  }

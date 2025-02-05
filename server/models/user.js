@@ -4,11 +4,12 @@ const Result = require('../models/survey')
 const { generateReferralCode } = require('../utils/referral')
 
 const formSchema = new mongoose.Schema({
-    state: { type: String, required: true },
-    city: { type: String, required: true },
+    country: { type: String, required: true },
+    state: { type: String, required: false },
+    city: { type: String, required: false },
     licenseAge: { type: String, required: true },
     age: { type: Number, required: true, min: 0 },
-    ethnicity: { type: String, required: false },
+    ethnicity: { type: String, required: true },
     gender: { type: String, required: true },
     visuallyImpaired: { type: Boolean, default: false }
 });
@@ -18,12 +19,15 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     referralCode: { type: String, required: true, unique: true },
     referredByUser: { type: String },
+    numSurveysFilled: { type: Number, default: 0 },
+    numRaffleEntries: { type: Number, default: 0 },
     form: { type: formSchema, required: true }
 });
 
 userSchema.statics.register = async function (email, password, referredByUser, formData) {
 
     const emailExists = await this.findOne({ email })
+ 
  
     if (emailExists) {
         throw Error('Email already exists!')
@@ -35,6 +39,11 @@ userSchema.statics.register = async function (email, password, referredByUser, f
             const error = new Error('Invalid referral code');
             error.statusCode = 400;
             throw error;
+        } else {
+            console.log('Referrer exists!');
+            // Add 10 raffle entries to the referrer
+            referrerExists.numRaffleEntries += 10;
+            referrerExists.save();
         }
     }
 
@@ -48,7 +57,9 @@ userSchema.statics.register = async function (email, password, referredByUser, f
         password: hash, 
         referralCode,
         referredByUser,
-        form: formData
+        form: formData,
+        numSurveysFilled: 0,
+        numRaffleEntries: 5
     });
 
     return { user, referralCode };
@@ -58,18 +69,26 @@ userSchema.statics.signIn = async function (email, password) {
     const user = await this.findOne({ email })
 
     if (!user) {
-        throw Error('The email that was provided is not valid, please try again');
+        throw Error('The email that was provided is not valid, please try again.');
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-        throw Error('Incorrect password');
+        throw Error('Incorrect password.');
     }
 
-    const surveysCompleted = await Result.countDocuments({ userId: user.email });
-    
-    return { user, surveysCompleted, referralCode: user.referralCode };
+    return { user, surveysCompleted: user.numSurveysFilled, referralCode: user.referralCode, numRaffleEntries: user.numRaffleEntries };
+}
+
+userSchema.statics.validateReferral = async function (code) {
+    const referrerExists = await this.findOne({ referralCode: code })
+
+    if (!referrerExists) {
+        return { isValid: false }
+    } else {
+        return { isValid: true }
+    }
 }
 
 const User = mongoose.model('User', userSchema);
