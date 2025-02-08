@@ -6,17 +6,22 @@ Last Updated: Feb 8, 2025
 import pandas as pd
 import cv2
 import numpy as np
+import matplotlib as plt
+import ast
+import os
 from pathlib import Path
 from scipy.interpolate import interp1d
 
 class UserGazeVideoCreator:
-    def __init__(self, video_folder_path, csv_path, output_folder_path):
+    def __init__(self, video_folder_path, csv_path, output_folder_path, aggregate_csv, output_folder_aggregated):
         """
         Initialize the video creator with paths
         """
         self.video_folder = Path(video_folder_path)
         self.output_folder = Path(output_folder_path)
+        self.output_folder_aggregated = Path(output_folder_aggregated)
         self.output_folder.mkdir(parents=True, exist_ok=True)
+        self.output_folder_aggregated.mkdir(parents=True, exist_ok=True)
         
         # Hot pink color in BGR format
         self.dot_color = (147, 20, 255) # RGB(255, 20, 147) in BGR
@@ -24,6 +29,7 @@ class UserGazeVideoCreator:
         # Read and normalize the gaze data
         print("Reading and normalizing gaze data...")
         self.gaze_data = self.read_normalized_gaze_data(csv_path)
+        self.aggregate_gaze_data = pd.read_csv(aggregate_csv)
         
         # Get unique users
         self.users = self.gaze_data['userId'].unique()
@@ -131,7 +137,7 @@ class UserGazeVideoCreator:
                     print(f"Video file not found for {video_id}")
                     continue
 
-                print(f"Processing video {video_id} for user {user_id}")
+                print(f"Processing video {video_id} for user {user_id}...")
 
                 # Open video
                 cap = cv2.VideoCapture(str(video_path))
@@ -195,14 +201,19 @@ class UserGazeVideoCreator:
                 print(f"Error processing video {video_id}: {str(e)}")
                 continue
 
+        
+
+
 def main():
     # File paths
     video_folder = "../data/driving_videos"
     csv_path = "../data/normalized_gaze_data.csv"
+    aggregate_csv_path = "../data/aggregate_gaze_data_by_video.csv"
     output_folder = "../data/user_gaze_videos"
+    output_folder_aggregated = "../data/videos_with_all_gazes"
 
     try:
-        creator = UserGazeVideoCreator(video_folder, csv_path, output_folder)
+        creator = UserGazeVideoCreator(video_folder, csv_path, output_folder, aggregate_csv=aggregate_csv_path, output_folder_aggregated=output_folder_aggregated)
 
         # First create a sample video for one user
         sample_user = creator.users[0]
