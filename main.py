@@ -27,6 +27,8 @@ def main():
     naive_model = NaiveHazardDetector()
     naive_model.fit(processed_data)
     predictions = naive_model.predict_all(processed_data)
+
+    
     
     # Evaluate Naive Approach
     naive_model.evaluate(processed_data, predictions)
